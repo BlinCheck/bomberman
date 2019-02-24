@@ -1,1 +1,1 @@
-bomberman
+Its original Bomberman game on console, that I made as a university lab project.
