@@ -1,0 +1,11 @@
+C:\Users\user\source\repos\Bomberman\Bomberman\bin\Debug\netcoreapp2.1\Bomberman.deps.json
+C:\Users\user\source\repos\Bomberman\Bomberman\bin\Debug\netcoreapp2.1\Bomberman.runtimeconfig.json
+C:\Users\user\source\repos\Bomberman\Bomberman\bin\Debug\netcoreapp2.1\Bomberman.runtimeconfig.dev.json
+C:\Users\user\source\repos\Bomberman\Bomberman\bin\Debug\netcoreapp2.1\Bomberman.dll
+C:\Users\user\source\repos\Bomberman\Bomberman\bin\Debug\netcoreapp2.1\Bomberman.pdb
+C:\Users\user\source\repos\Bomberman\Bomberman\obj\Debug\netcoreapp2.1\Bomberman.csprojAssemblyReference.cache
+C:\Users\user\source\repos\Bomberman\Bomberman\obj\Debug\netcoreapp2.1\Bomberman.csproj.CoreCompileInputs.cache
+C:\Users\user\source\repos\Bomberman\Bomberman\obj\Debug\netcoreapp2.1\Bomberman.AssemblyInfoInputs.cache
+C:\Users\user\source\repos\Bomberman\Bomberman\obj\Debug\netcoreapp2.1\Bomberman.AssemblyInfo.cs
+C:\Users\user\source\repos\Bomberman\Bomberman\obj\Debug\netcoreapp2.1\Bomberman.dll
+C:\Users\user\source\repos\Bomberman\Bomberman\obj\Debug\netcoreapp2.1\Bomberman.pdb
