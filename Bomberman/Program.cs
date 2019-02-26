@@ -13,11 +13,13 @@ namespace Bomberman
 
         static void Main(string[] args)
         {
+            Console.CursorVisible = false;
             Session.isAlive = true;
             Matrix matrix = new Matrix();
             matrix.generateMatrix();
             matrix.displayMatrix();
-            
+            Time time = new Time(0, 30);
+
             ConsoleKeyInfo key = new ConsoleKeyInfo();
             while (Session.isAlive)
             {
@@ -91,14 +93,41 @@ namespace Bomberman
                 }
             }
 
-            Console.SetCursorPosition(0, 6);
-            Console.WriteLine("Game Over");
-            Console.Write("Press \"Q\" to quit");
-            while(key.Key != ConsoleKey.Q)
-            {
+            while (key.Key != ConsoleKey.Q)
                 key = Console.ReadKey(true);
-            }
             
+        }
+
+        public static void timer(object obj)
+        {
+            if(Session.isAlive)
+            {
+                Time time = (Time)obj;
+
+                Console.SetCursorPosition(13, 0);
+                if (time.Minutes < 10)
+                    Console.Write($"Time: 0{time.Minutes}:");
+                else
+                    Console.Write($"Time: {time.Minutes}:");
+
+                if (time.Seconds < 10)
+                    Console.Write($"0{time.Seconds}");
+                else
+                    Console.Write($"{time.Seconds}");
+
+                if (time.Seconds == 0)
+                {
+                    if (time.Minutes == 0)
+                        Session.End();
+                    else
+                    {
+                        time.Minutes--;
+                        time.Seconds = 59;
+                    }
+                }
+                else
+                    time.Seconds--;
+            }
         }
 
         public static void setBomb(Matrix matrix)
@@ -164,10 +193,10 @@ namespace Bomberman
                 }
             }
 
-            if (!playerIsFound)
-                Session.isAlive = false;
-
             Timer tm = new Timer(clearRuines, matrix, 800, -1);
+
+            if (!playerIsFound)
+                Session.End();
         }
 
         public static void clearRuines(object obj)
@@ -238,9 +267,59 @@ namespace Bomberman
         }
     }
 
+    class Time
+    {
+        private int minutes;
+        private int seconds;
+        private Timer t;
+
+        public Time(int minutes, int seconds)
+        {
+            this.Minutes = minutes;
+            this.Seconds = seconds;
+            t = new Timer(Program.timer, this, 0, 1000);
+        }
+
+        public int Minutes
+        {
+            get
+            {
+                return this.minutes;
+            }
+
+            set
+            {
+                if (value >= 0 && value < 60)
+                    this.minutes = value;
+            }
+        }
+
+        public int Seconds
+        {
+            get
+            {
+                return this.seconds;
+            }
+
+            set
+            {
+                if (value >= 0 && value < 60)
+                    this.seconds = value;
+            }
+        }
+    }
+
     struct Session
     {
         public static bool isAlive;
+
+        public static void End()
+        {
+            Session.isAlive = false;
+            Console.SetCursorPosition(0, 6);
+            Console.WriteLine("Game Over");
+            Console.Write("Press \"Q\" to quit");
+        }
     }
 
 
@@ -302,7 +381,6 @@ namespace Bomberman
         {
             int rows = mas.GetUpperBound(0) + 1;
             int columns = mas.Length / rows;
-            Console.CursorVisible = false;
 
             for(int i = 0; i < rows; i++)
             {
