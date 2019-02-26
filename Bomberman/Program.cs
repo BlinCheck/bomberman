@@ -13,80 +13,90 @@ namespace Bomberman
 
         static void Main(string[] args)
         {
+            Session.isAlive = true;
             Matrix matrix = new Matrix();
             matrix.generateMatrix();
             matrix.displayMatrix();
             
-            bool flag = true;
-            
-            while(flag)
+            ConsoleKeyInfo key = new ConsoleKeyInfo();
+            while (Session.isAlive)
             {
-                ConsoleKeyInfo key = Console.ReadKey(true);
-                if (matrix[playerX, playerY].Name.Equals("bomb"))
-                    moveFromBomb(matrix, key);
-                else
+                key = Console.ReadKey(true);
+                if (Session.isAlive)
                 {
-                    switch (key.Key)
+                    if (matrix[playerX, playerY].Name.Equals("bomb"))
+                        moveFromBomb(matrix, key);
+                    else
                     {
-                        case ConsoleKey.Q:
-                            flag = false;
-                            break;
-                        case ConsoleKey.W:
-                            if (playerX - 1 >= 0 && matrix[playerX - 1, playerY].Name.Equals("space"))
-                            {
-                                matrix[playerX, playerY] = new Elem(' ', "space", true);
-                                Console.SetCursorPosition(playerY, playerX);
-                                Console.Write(' ');
-                                playerX -= 1;
-                                matrix[playerX, playerY] = new Elem('I', "player", true);
-                                Console.SetCursorPosition(playerY, playerX);
-                                Console.Write('I');
-                            }
-                            break;
-                        case ConsoleKey.D:
-                            if (playerY + 1 <= 9 && matrix[playerX, playerY + 1].Name.Equals("space"))
-                            {
-                                matrix[playerX, playerY] = new Elem(' ', "space", true);
-                                Console.SetCursorPosition(playerY, playerX);
-                                Console.Write(' ');
-                                playerY += 1;
-                                matrix[playerX, playerY] = new Elem('I', "player", true);
-                                Console.SetCursorPosition(playerY, playerX);
-                                Console.Write('I');
+                        switch (key.Key)
+                        {
+                            case ConsoleKey.Q:
+                                break;
+                            case ConsoleKey.W:
+                                if (playerX - 1 >= 0 && matrix[playerX - 1, playerY].Name.Equals("space"))
+                                {
+                                    matrix[playerX, playerY] = new Elem(' ', "space", true);
+                                    Console.SetCursorPosition(playerY, playerX);
+                                    Console.Write(' ');
+                                    playerX -= 1;
+                                    matrix[playerX, playerY] = new Elem('I', "player", true);
+                                    Console.SetCursorPosition(playerY, playerX);
+                                    Console.Write('I');
+                                }
+                                break;
+                            case ConsoleKey.D:
+                                if (playerY + 1 <= 9 && matrix[playerX, playerY + 1].Name.Equals("space"))
+                                {
+                                    matrix[playerX, playerY] = new Elem(' ', "space", true);
+                                    Console.SetCursorPosition(playerY, playerX);
+                                    Console.Write(' ');
+                                    playerY += 1;
+                                    matrix[playerX, playerY] = new Elem('I', "player", true);
+                                    Console.SetCursorPosition(playerY, playerX);
+                                    Console.Write('I');
 
-                            }
-                            break;
-                        case ConsoleKey.A:
-                            if (playerY - 1 >= 0 && matrix[playerX, playerY - 1].Name.Equals("space"))
-                            {
-                                matrix[playerX, playerY] = new Elem(' ', "space", true);
-                                Console.SetCursorPosition(playerY, playerX);
-                                Console.Write(' ');
-                                playerY -= 1;
-                                matrix[playerX, playerY] = new Elem('I', "player", true);
-                                Console.SetCursorPosition(playerY, playerX);
-                                Console.Write('I');
+                                }
+                                break;
+                            case ConsoleKey.A:
+                                if (playerY - 1 >= 0 && matrix[playerX, playerY - 1].Name.Equals("space"))
+                                {
+                                    matrix[playerX, playerY] = new Elem(' ', "space", true);
+                                    Console.SetCursorPosition(playerY, playerX);
+                                    Console.Write(' ');
+                                    playerY -= 1;
+                                    matrix[playerX, playerY] = new Elem('I', "player", true);
+                                    Console.SetCursorPosition(playerY, playerX);
+                                    Console.Write('I');
 
-                            }
-                            break;
-                        case ConsoleKey.S:
-                            if (playerX + 1 <= 4 && matrix[playerX + 1, playerY].Name.Equals("space"))
-                            {
-                                matrix[playerX, playerY] = new Elem(' ', "space", true);
-                                Console.SetCursorPosition(playerY, playerX);
-                                Console.Write(' ');
-                                playerX += 1;
-                                matrix[playerX, playerY] = new Elem('I', "player", true);
-                                Console.SetCursorPosition(playerY, playerX);
-                                Console.Write('I');
-                            }
-                            break;
-                        case ConsoleKey.E:
-                            if(bombOn == false)
-                                setBomb(matrix);
-                            break;
+                                }
+                                break;
+                            case ConsoleKey.S:
+                                if (playerX + 1 <= 4 && matrix[playerX + 1, playerY].Name.Equals("space"))
+                                {
+                                    matrix[playerX, playerY] = new Elem(' ', "space", true);
+                                    Console.SetCursorPosition(playerY, playerX);
+                                    Console.Write(' ');
+                                    playerX += 1;
+                                    matrix[playerX, playerY] = new Elem('I', "player", true);
+                                    Console.SetCursorPosition(playerY, playerX);
+                                    Console.Write('I');
+                                }
+                                break;
+                            case ConsoleKey.E:
+                                if (bombOn == false)
+                                    setBomb(matrix);
+                                break;
+                        }
                     }
                 }
+            }
+
+            Console.SetCursorPosition(0, 6);
+            Console.WriteLine("Game Over");
+            Console.Write("Press \"Q\" to quit");
+            while(key.Key != ConsoleKey.Q)
+            {
+                key = Console.ReadKey(true);
             }
             
         }
@@ -108,13 +118,19 @@ namespace Bomberman
             Matrix matrix = (Matrix)obj;
             if(bombX-1 >= 0 && matrix[bombX-1, bombY].Destroyable == true)
             {
+                if (matrix[bombX-1, bombY].Name.Equals("player"))
+                    Session.isAlive = false;
+
                 matrix[bombX - 1, bombY] = new Elem('.', "ruine", false);
                 Console.SetCursorPosition(bombY, bombX - 1);
                 Console.Write('.');
             }
 
-            if (bombX + 1 <= 4 && matrix[bombX + 1, bombY].Destroyable == true)
+            if (bombX + 1 <= 4 && matrix[bombX+1, bombY].Destroyable == true)
             {
+                if (matrix[bombX+1, bombY].Name.Equals("player"))
+                    Session.isAlive = false;
+
                 matrix[bombX + 1, bombY] = new Elem('.', "ruine", false);
                 Console.SetCursorPosition(bombY, bombX + 1);
                 Console.Write('.');
@@ -122,6 +138,9 @@ namespace Bomberman
 
             if (bombY - 1 >= 0 && matrix[bombX, bombY-1].Destroyable == true)
             {
+                if (matrix[bombX, bombY-1].Name.Equals("player"))
+                    Session.isAlive = false;
+
                 matrix[bombX, bombY-1] = new Elem('.', "ruine", false);
                 Console.SetCursorPosition(bombY-1, bombX);
                 Console.Write('.');
@@ -129,6 +148,9 @@ namespace Bomberman
 
             if (bombY + 1 <= 9 && matrix[bombX, bombY+1].Destroyable == true)
             {
+                if (matrix[bombX, bombY+1].Name.Equals("player"))
+                    Session.isAlive = false;
+
                 matrix[bombX, bombY+1] = new Elem('.', "ruine", false);
                 Console.SetCursorPosition(bombY+1, bombX);
                 Console.Write('.');
@@ -145,11 +167,12 @@ namespace Bomberman
         public static void clearRuines(object obj)
         {
             Matrix matrix = (Matrix)obj;
-            for(int i = 0; i < 5; i++)
+            for (int i = 0; i < 5; i++)
             {
-                for(int j = 0; j < 10; j++)
+                for (int j = 0; j < 10; j++)
                 {
-                    if(matrix[i,j].Name.Equals("ruine"))
+
+                    if (matrix[i, j].Name.Equals("ruine"))
                     {
                         matrix[i, j] = new Elem(' ', "space", true);
                         Console.SetCursorPosition(j, i);
@@ -207,6 +230,11 @@ namespace Bomberman
                     break;
             }
         }
+    }
+
+    struct Session
+    {
+        public static bool isAlive;
     }
 
 
