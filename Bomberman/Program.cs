@@ -116,11 +116,9 @@ namespace Bomberman
         public static void explodeBomb(object obj)
         {
             Matrix matrix = (Matrix)obj;
+            bool playerIsFound = false;
             if(bombX-1 >= 0 && matrix[bombX-1, bombY].Destroyable == true)
             {
-                if (matrix[bombX-1, bombY].Name.Equals("player"))
-                    Session.isAlive = false;
-
                 matrix[bombX - 1, bombY] = new Elem('.', "ruine", false);
                 Console.SetCursorPosition(bombY, bombX - 1);
                 Console.Write('.');
@@ -128,9 +126,6 @@ namespace Bomberman
 
             if (bombX + 1 <= 4 && matrix[bombX+1, bombY].Destroyable == true)
             {
-                if (matrix[bombX+1, bombY].Name.Equals("player"))
-                    Session.isAlive = false;
-
                 matrix[bombX + 1, bombY] = new Elem('.', "ruine", false);
                 Console.SetCursorPosition(bombY, bombX + 1);
                 Console.Write('.');
@@ -138,9 +133,6 @@ namespace Bomberman
 
             if (bombY - 1 >= 0 && matrix[bombX, bombY-1].Destroyable == true)
             {
-                if (matrix[bombX, bombY-1].Name.Equals("player"))
-                    Session.isAlive = false;
-
                 matrix[bombX, bombY-1] = new Elem('.', "ruine", false);
                 Console.SetCursorPosition(bombY-1, bombX);
                 Console.Write('.');
@@ -148,9 +140,6 @@ namespace Bomberman
 
             if (bombY + 1 <= 9 && matrix[bombX, bombY+1].Destroyable == true)
             {
-                if (matrix[bombX, bombY+1].Name.Equals("player"))
-                    Session.isAlive = false;
-
                 matrix[bombX, bombY+1] = new Elem('.', "ruine", false);
                 Console.SetCursorPosition(bombY+1, bombX);
                 Console.Write('.');
@@ -160,6 +149,23 @@ namespace Bomberman
             Console.SetCursorPosition(bombY, bombX);
             Console.Write('.');
             bombOn = false;
+
+            for (int i = 0; i < 5; i++)
+            {
+                for (int j = 0; j < 10; j++)
+                {
+                    if (matrix[i, j].Name.Equals("player"))
+                    {
+                        playerIsFound = true;
+                        break;
+                    }
+                    if (playerIsFound)
+                        break;
+                }
+            }
+
+            if (!playerIsFound)
+                Session.isAlive = false;
 
             Timer tm = new Timer(clearRuines, matrix, 800, -1);
         }
