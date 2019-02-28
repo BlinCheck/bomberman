@@ -18,10 +18,10 @@ namespace Bomberman
             Matrix matrix = new Matrix();
             matrix.generateMatrix();
             matrix.displayMatrix();
-            Time time = new Time(0, 30);
+            Time time = new Time(2, 30);
 
             ConsoleKeyInfo key = new ConsoleKeyInfo();
-            while (Session.isAlive)
+            while (Session.isAlive && key.Key != ConsoleKey.Q)
             {
                 key = Console.ReadKey(true);
                 if (Session.isAlive)
@@ -104,11 +104,16 @@ namespace Bomberman
             {
                 Time time = (Time)obj;
 
-                Console.SetCursorPosition(13, 0);
                 if (time.Minutes < 10)
+                {
+                    Console.SetCursorPosition(13, 0);
                     Console.Write($"Time: 0{time.Minutes}:");
+                }
                 else
+                {
+                    Console.SetCursorPosition(13, 0);
                     Console.Write($"Time: {time.Minutes}:");
+                }
 
                 if (time.Seconds < 10)
                     Console.Write($"0{time.Seconds}");
@@ -148,6 +153,9 @@ namespace Bomberman
             bool playerIsFound = false;
             if(bombX-1 >= 0 && matrix[bombX-1, bombY].Destroyable == true)
             {
+                if (matrix[bombX - 1, bombY].Name.Equals("brick"))
+                    Session.brickAmount--;
+
                 matrix[bombX - 1, bombY] = new Elem('.', "ruine", false);
                 Console.SetCursorPosition(bombY, bombX - 1);
                 Console.Write('.');
@@ -155,6 +163,9 @@ namespace Bomberman
 
             if (bombX + 1 <= 4 && matrix[bombX+1, bombY].Destroyable == true)
             {
+                if (matrix[bombX +1, bombY].Name.Equals("brick"))
+                    Session.brickAmount--;
+
                 matrix[bombX + 1, bombY] = new Elem('.', "ruine", false);
                 Console.SetCursorPosition(bombY, bombX + 1);
                 Console.Write('.');
@@ -162,6 +173,9 @@ namespace Bomberman
 
             if (bombY - 1 >= 0 && matrix[bombX, bombY-1].Destroyable == true)
             {
+                if (matrix[bombX, bombY-1].Name.Equals("brick"))
+                    Session.brickAmount--;
+
                 matrix[bombX, bombY-1] = new Elem('.', "ruine", false);
                 Console.SetCursorPosition(bombY-1, bombX);
                 Console.Write('.');
@@ -169,6 +183,9 @@ namespace Bomberman
 
             if (bombY + 1 <= 9 && matrix[bombX, bombY+1].Destroyable == true)
             {
+                if (matrix[bombX, bombY+1].Name.Equals("brick"))
+                    Session.brickAmount--;
+
                 matrix[bombX, bombY+1] = new Elem('.', "ruine", false);
                 Console.SetCursorPosition(bombY+1, bombX);
                 Console.Write('.');
@@ -196,7 +213,13 @@ namespace Bomberman
             Timer tm = new Timer(clearRuines, matrix, 800, -1);
 
             if (!playerIsFound)
+            {
                 Session.End();
+                return;
+            }
+
+            if (Session.brickAmount <= 0)
+                Session.Win();
         }
 
         public static void clearRuines(object obj)
@@ -309,15 +332,25 @@ namespace Bomberman
         }
     }
 
-    struct Session
+    class Session
     {
         public static bool isAlive;
+        public static int brickAmount = 21;
 
         public static void End()
         {
             Session.isAlive = false;
             Console.SetCursorPosition(0, 6);
             Console.WriteLine("Game Over");
+            Console.Write("Press \"Q\" to quit");
+        }
+
+        public static void Win()
+        {
+            Session.isAlive = false;
+            Console.SetCursorPosition(0, 6);
+            Console.WriteLine("Congratulations!");
+            Console.WriteLine("You passed the level 1");
             Console.Write("Press \"Q\" to quit");
         }
     }
@@ -341,6 +374,7 @@ namespace Bomberman
     struct Matrix
     {
         Elem[,] mas;
+
         public Elem this[int i, int j]
         {
             get
