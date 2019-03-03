@@ -18,6 +18,8 @@ namespace Bomberman
             Matrix matrix = new Matrix();
             matrix.generateMatrix();
             matrix.displayMatrix();
+            displayLives();
+            displayBombAmount();
             Time time = new Time(2, 30);
 
             ConsoleKeyInfo key = new ConsoleKeyInfo();
@@ -135,8 +137,25 @@ namespace Bomberman
             }
         }
 
+        public static void displayLives()
+        {
+            Console.SetCursorPosition(13, 1);
+            Console.Write($"Lives: {Session.lives}");
+        }
+
+        public static void displayBombAmount()
+        {
+            Console.SetCursorPosition(13, 2);
+            if(Session.bombAmount > 9)
+                Console.Write($"Bombs: {Session.bombAmount}");
+            else
+                Console.Write($"Bombs: {Session.bombAmount} ");
+        }
+
         public static void setBomb(Matrix matrix)
         {
+            Session.bombAmount--;
+            displayBombAmount();
             Console.SetCursorPosition(playerY, playerX);
             Console.Write('@');
             matrix[playerX, playerY] = new Elem('@', "bomb", true);
@@ -214,9 +233,27 @@ namespace Bomberman
 
             if (!playerIsFound)
             {
-                Session.End();
-                return;
+                if (Session.lives > 1)
+                {
+                    Session.lives--;
+                    displayLives();
+                    matrix[0, 0] = new Elem('I', "player", true);
+                    playerX = 0;
+                    playerY = 0;
+                    Console.SetCursorPosition(0, 0);
+                    Console.Write("I");
+                }
+                else
+                {
+                    Session.lives--;
+                    displayLives();
+                    Session.End();
+                    return;
+                }
             }
+
+            if (Session.bombAmount == 0 && Session.brickAmount != 0)
+                Session.End();
 
             if (Session.brickAmount <= 0)
                 Session.Win();
@@ -336,6 +373,8 @@ namespace Bomberman
     {
         public static bool isAlive;
         public static int brickAmount = 21;
+        public static int bombAmount = 15;
+        public static int lives = 2;
 
         public static void End()
         {
