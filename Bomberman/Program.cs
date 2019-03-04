@@ -10,10 +10,19 @@ namespace Bomberman
         static bool bombOn = false;
         static int bombX;
         static int bombY;
+        public static string playerName;
 
         static void Main(string[] args)
         {
             displayManual();
+
+            Console.Write(" Enter your name: ");
+            playerName = Console.ReadLine();
+            Console.WriteLine($"\n Welcome, {playerName}!");
+            Console.WriteLine(" If you are ready press any key to start");
+            Console.ReadKey(true);
+            Console.Clear();
+
             Console.CursorVisible = false;
             Console.SetCursorPosition(0, 0);
             Session.isAlive = true;
@@ -195,14 +204,13 @@ namespace Bomberman
         {
             Console.Clear();
             Console.WriteLine(" Welcome to Bomberman!");
-            Console.WriteLine(" This is short manual for the game");
-            Console.WriteLine(" Please, read this before you start playing");
+            Console.WriteLine(" This is short manual for the game:");
             Console.WriteLine(" Use W, A, S, D to move");
             Console.WriteLine(" Use E to set the bomb");
             Console.WriteLine(" You can quit game by pressing Q");
             Console.WriteLine(" You can pick up additional bombs(*) and lives(L)");
             Console.WriteLine(" Destroy all bricks(#) to win");
-            Console.WriteLine(" If you are ready, press any key to continue");
+            Console.WriteLine(" Press any key to continue");
             Console.ReadKey(true);
             Console.Clear();
         }
@@ -428,7 +436,7 @@ namespace Bomberman
         {
             Session.isAlive = false;
             Console.SetCursorPosition(0, 6);
-            Console.WriteLine("Game Over");
+            Console.WriteLine("Game Over :(");
             Console.WriteLine("Press \"Q\" to quit");
         }
 
@@ -438,7 +446,7 @@ namespace Bomberman
             Program.finalScore();
             Program.displayScore();
             Console.SetCursorPosition(0, 6);
-            Console.WriteLine("Congratulations!");
+            Console.WriteLine($"Congratulations, {Program.playerName}!");
             Console.WriteLine("You passed the level 1");
             Console.WriteLine("Press \"Q\" to quit");
         }
