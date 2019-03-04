@@ -13,7 +13,9 @@ namespace Bomberman
 
         static void Main(string[] args)
         {
+            displayManual();
             Console.CursorVisible = false;
+            Console.SetCursorPosition(0, 0);
             Session.isAlive = true;
             Matrix matrix = new Matrix();
             matrix.generateMatrix();
@@ -25,9 +27,10 @@ namespace Bomberman
             ConsoleKeyInfo key = new ConsoleKeyInfo();
             while (Session.isAlive && key.Key != ConsoleKey.Q)
             {
-                key = Console.ReadKey(true);
                 if (Session.isAlive)
                 {
+                    key = Console.ReadKey(true);
+
                     if (matrix[playerX, playerY].Name.Equals("bomb"))
                         moveFromBomb(matrix, key);
                     else
@@ -96,7 +99,12 @@ namespace Bomberman
             }
 
             while (key.Key != ConsoleKey.Q)
+            {
                 key = Console.ReadKey(true);
+
+                if (key.Key == ConsoleKey.Q)
+                    break;
+            }
             
         }
 
@@ -137,6 +145,7 @@ namespace Bomberman
             }
         }
 
+
         public static void displayLives()
         {
             Console.SetCursorPosition(13, 1);
@@ -150,6 +159,21 @@ namespace Bomberman
                 Console.Write($"Bombs: {Session.bombAmount}");
             else
                 Console.Write($"Bombs: {Session.bombAmount} ");
+        }
+
+        public static void displayManual()
+        {
+            Console.Clear();
+            Console.WriteLine(" Welcome to Bomberman!");
+            Console.WriteLine(" This is short manual for the game");
+            Console.WriteLine(" Please, read this before you start playing");
+            Console.WriteLine(" Use W, A, S, D to move");
+            Console.WriteLine(" Use E to set the bomb");
+            Console.WriteLine(" You can quit game by pressing Q");
+            Console.WriteLine(" Destroy all bricks (#) to win");
+            Console.WriteLine(" If you are ready, press any key to continue");
+            Console.ReadKey(true);
+            Console.Clear();
         }
 
         public static void setBomb(Matrix matrix)
@@ -331,13 +355,13 @@ namespace Bomberman
     {
         private int minutes;
         private int seconds;
-        private Timer t;
+        public Timer t;
 
         public Time(int minutes, int seconds)
         {
             this.Minutes = minutes;
             this.Seconds = seconds;
-            t = new Timer(Program.timer, this, 0, 1000);
+            this.t = new Timer(Program.timer, this, 0, 1000);
         }
 
         public int Minutes
@@ -381,7 +405,7 @@ namespace Bomberman
             Session.isAlive = false;
             Console.SetCursorPosition(0, 6);
             Console.WriteLine("Game Over");
-            Console.Write("Press \"Q\" to quit");
+            Console.WriteLine("Press \"Q\" to quit");
         }
 
         public static void Win()
@@ -390,7 +414,7 @@ namespace Bomberman
             Console.SetCursorPosition(0, 6);
             Console.WriteLine("Congratulations!");
             Console.WriteLine("You passed the level 1");
-            Console.Write("Press \"Q\" to quit");
+            Console.WriteLine("Press \"Q\" to quit");
         }
     }
 
