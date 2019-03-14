@@ -4,7 +4,11 @@ using System.Text;
 
 namespace Bomberman
 {
-    class Space
+    class Space : Elem
     {
+        public Space() : base(' ', "space", true, true)
+        {
+
+        }
     }
 }

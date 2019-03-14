@@ -4,7 +4,11 @@ using System.Text;
 
 namespace Bomberman
 {
-    class Brick
+    class Brick : Elem
     {
+        public Brick() : base('#', "brick", true, false)
+        {
+
+        }
     }
 }

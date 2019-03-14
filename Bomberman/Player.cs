@@ -4,7 +4,11 @@ using System.Text;
 
 namespace Bomberman
 {
-    class Player
+    class Player : Elem
     {
+        public Player():base('I', "player", true, false)
+        {
+
+        }
     }
 }

@@ -5,129 +5,19 @@ namespace Bomberman
 {
     class Program
     {
-        static int playerX = 0;
-        static int playerY = 0;
-        static bool bombOn = false;
-        static int bombX;
-        static int bombY;
+        
         public static string playerName;
 
         static void Main(string[] args)
         {
-            displayManual();
+            Session session = new Session();
+            session.Start();
 
-            Console.Write(" Enter your name: ");
-            playerName = Console.ReadLine();
-            Console.WriteLine($"\n Welcome, {playerName}!");
-            Console.WriteLine(" If you are ready press any key to start");
-            Console.ReadKey(true);
-            Console.Clear();
-
-            Console.CursorVisible = false;
-            Console.SetCursorPosition(0, 0);
-            Session.isAlive = true;
-            Matrix matrix = new Matrix();
-            matrix.generateMatrix();
-            matrix.displayMatrix();
-            displayLives();
-            displayScore();
-            displayBombAmount();
-            Time time = new Time(2, 30);
-
-            ConsoleKeyInfo key = new ConsoleKeyInfo();
-            while (Session.isAlive && key.Key != ConsoleKey.Q)
-            {
-                if (Session.isAlive)
-                {
-                    key = Console.ReadKey(true);
-
-                    if (matrix[playerX, playerY].Name.Equals("bomb"))
-                        moveFromBomb(matrix, key);
-                    else
-                    {
-                        switch (key.Key)
-                        {
-                            case ConsoleKey.Q:
-                                break;
-                            case ConsoleKey.W:
-                                if (playerX - 1 >= 0 && matrix[playerX - 1, playerY].Step)
-                                {
-                                    pickUpBonus(matrix[playerX - 1, playerY]);
-
-                                    matrix[playerX, playerY] = new Elem(' ', "space", true, true);
-                                    Console.SetCursorPosition(playerY, playerX);
-                                    Console.Write(' ');
-                                    playerX -= 1;
-                                    matrix[playerX, playerY] = new Elem('I', "player", true, false);
-                                    Console.SetCursorPosition(playerY, playerX);
-                                    Console.Write('I');
-                                }
-                                break;
-                            case ConsoleKey.D:
-                                if (playerY + 1 <= 9 && matrix[playerX, playerY + 1].Step)
-                                {
-                                    pickUpBonus(matrix[playerX, playerY+1]);
-
-                                    matrix[playerX, playerY] = new Elem(' ', "space", true, true);
-                                    Console.SetCursorPosition(playerY, playerX);
-                                    Console.Write(' ');
-                                    playerY += 1;
-                                    matrix[playerX, playerY] = new Elem('I', "player", true, false);
-                                    Console.SetCursorPosition(playerY, playerX);
-                                    Console.Write('I');
-
-                                }
-                                break;
-                            case ConsoleKey.A:
-                                if (playerY - 1 >= 0 && matrix[playerX, playerY - 1].Step)
-                                {
-                                    pickUpBonus(matrix[playerX, playerY-1]);
-
-                                    matrix[playerX, playerY] = new Elem(' ', "space", true, true);
-                                    Console.SetCursorPosition(playerY, playerX);
-                                    Console.Write(' ');
-                                    playerY -= 1;
-                                    matrix[playerX, playerY] = new Elem('I', "player", true, false);
-                                    Console.SetCursorPosition(playerY, playerX);
-                                    Console.Write('I');
-
-                                }
-                                break;
-                            case ConsoleKey.S:
-                                if (playerX + 1 <= 4 && matrix[playerX + 1, playerY].Step)
-                                {
-                                    pickUpBonus(matrix[playerX + 1, playerY]);
-
-                                    matrix[playerX, playerY] = new Elem(' ', "space", true, true);
-                                    Console.SetCursorPosition(playerY, playerX);
-                                    Console.Write(' ');
-                                    playerX += 1;
-                                    matrix[playerX, playerY] = new Elem('I', "player", true, false);
-                                    Console.SetCursorPosition(playerY, playerX);
-                                    Console.Write('I');
-                                }
-                                break;
-                            case ConsoleKey.E:
-                                if (bombOn == false)
-                                    setBomb(matrix);
-                                break;
-                        }
-                    }
-                }
-            }
-
-
-            while (key.Key != ConsoleKey.Q)
-            {
-                key = Console.ReadKey(true);
-
-                if (key.Key == ConsoleKey.Q)
-                    break;
-            }
+            //Time time = new Time(2, 30);
             
         }
 
-        public static void timer(object obj)
+       /* public static void timer(object obj)
         {
             if(Session.isAlive)
             {
@@ -162,9 +52,9 @@ namespace Bomberman
                 else
                     Time.seconds--;
             }
-        }
+        }*/
 
-        public static void pickUpBonus(Elem elem)
+        /*public static void pickUpBonus(Elem elem)
         {
             if (elem.Name.Equals("addBomb"))
             {
@@ -177,52 +67,18 @@ namespace Bomberman
                 Session.lives++;
                 displayLives();
             }
-        }
+        }*/
 
-        public static void displayLives()
-        {
-            Console.SetCursorPosition(13, 1);
-            Console.Write($"Lives: {Session.lives}");
-        }
 
-        public static void displayBombAmount()
-        {
-            Console.SetCursorPosition(13, 2);
-            if(Session.bombAmount > 9)
-                Console.Write($"Bombs: {Session.bombAmount}");
-            else
-                Console.Write($"Bombs: {Session.bombAmount} ");
-        }
 
-        public static void displayScore()
-        {
-            Console.SetCursorPosition(13, 3);
-            Console.Write($"Score: {Session.score}");
-        }
-
-        public static void displayManual()
-        {
-            Console.Clear();
-            Console.WriteLine(" Welcome to Bomberman!");
-            Console.WriteLine(" This is short manual for the game:");
-            Console.WriteLine(" Use W, A, S, D to move");
-            Console.WriteLine(" Use E to set the bomb");
-            Console.WriteLine(" You can quit game by pressing Q");
-            Console.WriteLine(" You can pick up additional bombs(*) and lives(L)");
-            Console.WriteLine(" Destroy all bricks(#) to win");
-            Console.WriteLine(" Press any key to continue");
-            Console.ReadKey(true);
-            Console.Clear();
-        }
-
-        public static void finalScore()
+        /*public static void finalScore()
         {
             Session.score += Time.seconds * 5 + Time.minutes * 300;
             Session.score += Session.lives * 500;
             Session.score += Session.bombAmount * 300;
-        }
+        }*/
 
-        public static void setBomb(Matrix matrix)
+        /*public static void setBomb(Matrix matrix)
         {
             Session.bombAmount--;
             displayBombAmount();
@@ -234,9 +90,9 @@ namespace Bomberman
             bombY = playerY;
             TimerCallback timerCB = new TimerCallback(explodeBomb);
             Timer t = new Timer(timerCB, matrix, 1500, -1);
-        }
+        }*/
 
-        public static void explodeBomb(object obj)
+        /*public static void explodeBomb(object obj)
         {
             Matrix matrix = (Matrix)obj;
             bool playerIsFound = false;
@@ -339,9 +195,9 @@ namespace Bomberman
 
             if (Session.brickAmount <= 0)
                 Session.Win();
-        }
+        }*/
 
-        public static void clearRuines(object obj)
+        /*public static void clearRuines(object obj)
         {
             Matrix matrix = (Matrix)obj;
             for (int i = 0; i < 5; i++)
@@ -357,177 +213,10 @@ namespace Bomberman
                     }
                 }
             }
-        }
-
-        public static void moveFromBomb(Matrix matrix, ConsoleKeyInfo key)
-        {
-            switch (key.Key)
-            {
-                case ConsoleKey.W:
-                    if (playerX - 1 >= 0 && matrix[playerX - 1, playerY].Name.Equals("space"))
-                    {
-
-                        playerX -= 1;
-                        matrix[playerX, playerY] = new Elem('I', "player", true, false);
-                        Console.SetCursorPosition(playerY, playerX);
-                        Console.Write('I');
-                    }
-                    break;
-                case ConsoleKey.D:
-                    if (playerY + 1 <= 9 && matrix[playerX, playerY + 1].Name.Equals("space"))
-                    {
-
-                        playerY += 1;
-                        matrix[playerX, playerY] = new Elem('I', "player", true, false);
-                        Console.SetCursorPosition(playerY, playerX);
-                        Console.Write('I');
-
-                    }
-                    break;
-                case ConsoleKey.A:
-                    if (playerY - 1 >= 0 && matrix[playerX, playerY - 1].Name.Equals("space"))
-                    {
-
-                        playerY -= 1;
-                        matrix[playerX, playerY] = new Elem('I', "player", true, false);
-                        Console.SetCursorPosition(playerY, playerX);
-                        Console.Write('I');
-
-                    }
-                    break;
-                case ConsoleKey.S:
-                    if (playerX + 1 <= 4 && matrix[playerX + 1, playerY].Name.Equals("space"))
-                    {
-
-                        playerX += 1;
-                        matrix[playerX, playerY] = new Elem('I', "player", true, false);
-                        Console.SetCursorPosition(playerY, playerX);
-                        Console.Write('I');
-                    }
-                    break;
-            }
-        }
-    }
-
-    class Time
-    {
-        public static int minutes;
-        public static int seconds;
-        public Timer t;
-
-        public Time(int minutes, int seconds)
-        {
-            Time.minutes = minutes;
-            Time.seconds = seconds;
-            this.t = new Timer(Program.timer, this, 0, 1000);
-        }
+        }*/
 
     }
 
-    class Session
-    {
-        public static bool isAlive;
-        public static int brickAmount = 21;
-        public static int bombAmount = 14;
-        public static int lives = 2;
-        public static int score = 0;
-
-        public static void End()
-        {
-            Session.isAlive = false;
-            Console.SetCursorPosition(0, 6);
-            Console.WriteLine("Game Over :(");
-            Console.WriteLine("Press \"Q\" to quit");
-        }
-
-        public static void Win()
-        {
-            Session.isAlive = false;
-            Program.finalScore();
-            Program.displayScore();
-            Console.SetCursorPosition(0, 6);
-            Console.WriteLine($"Congratulations, {Program.playerName}!");
-            Console.WriteLine("You passed the level 1");
-            Console.WriteLine("Press \"Q\" to quit");
-        }
-    }
-
-
-    struct Elem
-    {
-        public char Symbol { get; set; }
-        public string Name { get; set; }
-        public bool Destroyable { get; set; }
-        public bool Step { get; set; }
-
-
-        public Elem(char sym, string name, bool destroy, bool step)
-        {
-            this.Symbol = sym;
-            this.Name = name;
-            this.Destroyable = destroy;
-            this.Step = step;
-        }
-    }
-
-    struct Matrix
-    {
-        Elem[,] mas;
-
-        public Elem this[int i, int j]
-        {
-            get
-            {
-                return mas[i,j];
-            }
-            set
-            {
-                mas[i, j] = value;
-            }
-        }
-
-        public void generateMatrix()
-        {
-            mas = new Elem[,] { {new Elem('I', "player", true, false), new Elem(' ', "space", true, true), new Elem(' ', "space", true, true),
-                                 new Elem('#', "brick", true, false), new Elem(' ', "space", true, true), new Elem(' ', "space", true, true),
-                                 new Elem('#', "brick", true, false), new Elem('#', "brick", true, false), new Elem('L', "addLife", true, true),
-                                 new Elem('#', "brick", true, false)}, 
-                {new Elem(' ', "space", true, true), new Elem('o', "concrete", false, false), new Elem('#', "brick", true, false),
-                 new Elem('o', "concrete", false, false), new Elem(' ', "space", true, true), new Elem('o', "concrete", false, false),
-                 new Elem(' ', "space", true, true), new Elem('o', "concrete", false, false), new Elem(' ', "space", true, true),
-                 new Elem('o', "concrete", false, false)},
-                {new Elem('#', "brick", true, false), new Elem('#', "brick", true, false), new Elem(' ', "space", true, true),
-                 new Elem('#', "brick", true, false), new Elem('#', "brick", true, false), new Elem('*', "addBomb", true, true),
-                 new Elem('#', "brick", true, false), new Elem('#', "brick", true, false), new Elem('#', "brick", true, false),
-                 new Elem('#', "brick", true, false)}, 
-                {new Elem(' ', "space", true, true), new Elem('o', "concrete", false, false), new Elem('#', "brick", true, false),
-                 new Elem('o', "concrete", false, false), new Elem('*', "addBomb", true, true), new Elem('o', "concrete", false, false),
-                 new Elem(' ', "space", true, true), new Elem('o', "concrete", false, false), new Elem('#', "brick", true, false),
-                 new Elem('o', "concrete", false, false)}, 
-                {new Elem(' ', "space", true, true), new Elem('#', "brick", true, false), new Elem('#', "brick", true, false),
-                 new Elem('#', "brick", true, false), new Elem(' ', "space", true, true), new Elem(' ', "space", true, true),
-                 new Elem('#', "brick", true, false), new Elem('#', "brick", true, false), new Elem('#', "brick", true, false),
-                 new Elem(' ', "space", true, true)} };
-        }
-
-        public void displayMatrix()
-        {
-            int rows = mas.GetUpperBound(0) + 1;
-            int columns = mas.Length / rows;
-
-            for(int i = 0; i < rows; i++)
-            {
-                for(int j = 0; j < columns; j++)
-                {
-                    Console.SetCursorPosition(j, i);
-                    Console.Write(mas[i,j].Symbol);
-                }
-            }
-            
-        }
-
-       
-    }
 
     
 }

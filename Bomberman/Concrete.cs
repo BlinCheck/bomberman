@@ -4,7 +4,11 @@ using System.Text;
 
 namespace Bomberman
 {
-    class Concrete
+    class Concrete : Elem
     {
+        public Concrete() : base('O', "concrete", false, false)
+        {
+
+        }
     }
 }

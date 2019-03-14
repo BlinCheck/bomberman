@@ -4,7 +4,11 @@ using System.Text;
 
 namespace Bomberman
 {
-    class Bomb
+    class Bomb : Elem
     {
+        public Bomb() : base('@', "bomb", false, false)
+        {
+
+        }
     }
 }
