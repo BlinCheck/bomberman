@@ -17,42 +17,6 @@ namespace Bomberman
             
         }
 
-       /* public static void timer(object obj)
-        {
-            if(Session.isAlive)
-            {
-                Time time = (Time)obj;
-
-                if (Time.minutes < 10)
-                {
-                    Console.SetCursorPosition(13, 0);
-                    Console.Write($"Time: 0{Time.minutes}:");
-                }
-                else
-                {
-                    Console.SetCursorPosition(13, 0);
-                    Console.Write($"Time: {Time.minutes}:");
-                }
-
-                if (Time.seconds < 10)
-                    Console.Write($"0{Time.seconds}");
-                else
-                    Console.Write($"{Time.seconds}");
-
-                if (Time.seconds == 0)
-                {
-                    if (Time.minutes == 0)
-                        Session.End();
-                    else
-                    {
-                        Time.minutes--;
-                        Time.seconds = 59;
-                    }
-                }
-                else
-                    Time.seconds--;
-            }
-        }*/
 
         /*public static void pickUpBonus(Elem elem)
         {

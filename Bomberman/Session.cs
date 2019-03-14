@@ -18,11 +18,13 @@ namespace Bomberman
         public int BombY;
         public string PlayerName;
         Matrix matrix;
+        Time time;
 
         public Session()
         {
             matrix = new Matrix();
             matrix.GenerateMatrix();
+            time = new Time(0, 10, this);
         }
 
         public void End()
@@ -58,6 +60,10 @@ namespace Bomberman
             Console.CursorVisible = false;
             Console.SetCursorPosition(0, 0);
             matrix.DisplayMatrix();
+            time.DisplayTimer(null, null);
+            time.t.Elapsed += time.DisplayTimer;
+            time.t.Enabled = true;
+            time.t.AutoReset = true;
             DisplayLives();
             DisplayScore();
             DisplayBombAmount();

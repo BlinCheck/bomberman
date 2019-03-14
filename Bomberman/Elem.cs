@@ -14,10 +14,10 @@ namespace Bomberman
 
         public Elem(char sym, string name, bool destroyable, bool step)
         {
-            this.Symbol = sym;
-            this.Name = name;
-            this.Destroyable = destroyable;
-            this.Step = step;
+            Symbol = sym;
+            Name = name;
+            Destroyable = destroyable;
+            Step = step;
         }
     }
 }
