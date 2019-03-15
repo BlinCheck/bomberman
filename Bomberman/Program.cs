@@ -12,8 +12,6 @@ namespace Bomberman
         {
             Session session = new Session();
             session.Start();
-
-            //Time time = new Time(2, 30);
             
         }
 
@@ -33,28 +31,6 @@ namespace Bomberman
             }
         }*/
 
-
-
-        /*public static void finalScore()
-        {
-            Session.score += Time.seconds * 5 + Time.minutes * 300;
-            Session.score += Session.lives * 500;
-            Session.score += Session.bombAmount * 300;
-        }*/
-
-        /*public static void setBomb(Matrix matrix)
-        {
-            Session.bombAmount--;
-            displayBombAmount();
-            Console.SetCursorPosition(playerY, playerX);
-            Console.Write('@');
-            matrix[playerX, playerY] = new Elem('@', "bomb", true, false);
-            bombOn = true;
-            bombX = playerX;
-            bombY = playerY;
-            TimerCallback timerCB = new TimerCallback(explodeBomb);
-            Timer t = new Timer(timerCB, matrix, 1500, -1);
-        }*/
 
         /*public static void explodeBomb(object obj)
         {

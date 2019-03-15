@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Timers;
 using System.Collections.Generic;
 using System.Text;
 
@@ -7,6 +8,7 @@ namespace Bomberman
     class Session
     {
         public bool IsAlive;
+        public bool PlayerIsDead = false;
         public int BrickAmount = 21;
         public int BombAmount = 14;
         public int Lives = 2;
@@ -17,14 +19,25 @@ namespace Bomberman
         public int BombX;
         public int BombY;
         public string PlayerName;
+        public int[,] Ruines = new int[5, 2];
         Matrix matrix;
         Time time;
+        Timer bombExploder;
+        Timer ruineCleaner;
 
         public Session()
         {
             matrix = new Matrix();
             matrix.GenerateMatrix();
-            time = new Time(0, 10, this);
+            time = new Time(2, 30, this);
+
+            for(int i = 0; i < 4; i++)
+            {
+                for(int j = 0; j < 2; j++)
+                {
+                    Ruines[i, j] = -1;
+                }
+            }
         }
 
         public void End()
@@ -38,7 +51,7 @@ namespace Bomberman
         public void Win()
         {
             IsAlive = false;
-            //Program.finalScore();
+            FinalScore();
             DisplayScore();
             Console.SetCursorPosition(0, 6);
             Console.WriteLine($"Congratulations, {PlayerName}!");
@@ -184,13 +197,80 @@ namespace Bomberman
         public void SetBomb()
         {
             BombAmount--;
-            //displayBombAmount();
+            DisplayBombAmount();
             Console.SetCursorPosition(PlayerY, PlayerX);
             Console.Write('@');
             matrix[PlayerX, PlayerY] = new Bomb();
             BombOn = true;
             BombX = PlayerX;
             BombY = PlayerY;
+
+            bombExploder = new Timer(1500);
+            bombExploder.Elapsed += ExplodeBomb;
+            bombExploder.Enabled = true;
+            bombExploder.AutoReset = false;
+
+        }
+
+        public void ExplodeBomb(Object sender, ElapsedEventArgs e)
+        {
+            BombOn = false;
+
+            if(BombY + 1 <= 9)
+                DestroyElem(0, BombX, BombY + 1);
+
+            if (BombX + 1 <= 4)
+                DestroyElem(1, BombX + 1, BombY);
+
+            if (BombX - 1 >= 0)
+                DestroyElem(2, BombX - 1, BombY);
+
+            if (BombY - 1 >= 0)
+                DestroyElem(3, BombX, BombY - 1);
+
+            DestroyElem(4, BombX, BombY);
+
+            ruineCleaner = new Timer(500);
+            ruineCleaner.Elapsed += ClearRuines;
+            ruineCleaner.Enabled = true;
+            ruineCleaner.AutoReset = false;
+
+            if (PlayerIsDead)
+                End();
+        }
+
+
+        public void DestroyElem(int row, int elemX, int elemY)
+        {
+            if(matrix[elemX, elemY].Destroyable)
+            {
+                Ruines[row, 0] = elemX;
+                Ruines[row, 1] = elemY;
+
+                if (elemX == PlayerX && elemY == PlayerY)
+                    PlayerIsDead = true;
+
+                matrix[elemX, elemY] = new Ruine();
+                Console.SetCursorPosition(elemY, elemX);
+                Console.Write('.');
+            }
+
+        }
+
+        public void ClearRuines(Object sender, ElapsedEventArgs e)
+        {
+            for (int i = 0; i < 5; i++)
+            {
+                if (Ruines[i, 0] != -1 && Ruines[i, 1] != -1)
+                {
+                    matrix[Ruines[i, 0], Ruines[i, 1]] = new Space();
+                    Console.SetCursorPosition(Ruines[i, 1], Ruines[i, 0]);
+                    Console.Write(' ');
+
+                    Ruines[i, 0] = -1;
+                    Ruines[i, 1] = -1;
+                }
+            }
         }
 
         public void DisplayLives()
@@ -206,6 +286,13 @@ namespace Bomberman
                 Console.Write($"Bombs: {BombAmount}");
             else
                 Console.Write($"Bombs: {BombAmount} ");
+        }
+
+        public void FinalScore()
+        {
+            Score += time.Seconds * 5 + time.Minutes * 300;
+            Score += Lives * 500;
+            Score += BombAmount * 300;
         }
 
         public void DisplayScore()
