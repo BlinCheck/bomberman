@@ -22,6 +22,7 @@ namespace Bomberman
 
         public void DisplayTimer(Object sender, ElapsedEventArgs e)
         {
+            Caller.LockConsole();
             if (Minutes < 10)
             {
                 Console.SetCursorPosition(Caller.matrix.Columns + 3, 0);
@@ -37,6 +38,8 @@ namespace Bomberman
                 Console.Write($"0{Seconds}");
             else
                 Console.Write($"{Seconds}");
+
+            Caller.UnlockConsole();
 
             if (Seconds == 0)
             {

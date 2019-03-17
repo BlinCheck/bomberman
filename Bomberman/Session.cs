@@ -7,6 +7,7 @@ namespace Bomberman
 {
     class Session
     {
+        public bool ConsoleIsLocked = false;
         public bool IsAlive;
         public bool PlayerIsDead = false;
         public int BrickAmount = 21;
@@ -74,7 +75,7 @@ namespace Bomberman
             DisplayScore();
             Console.SetCursorPosition(0, matrix.Rows+3);
             Console.WriteLine($"Congratulations, {PlayerName}!");
-            Console.WriteLine("You passed the level 1");
+            Console.WriteLine("You passed the level");
             Console.WriteLine("Press any key to return to menu");
             time.t.Elapsed -= time.DisplayTimer;
         }
@@ -122,24 +123,28 @@ namespace Bomberman
                             case ConsoleKey.W:
                                 if (PlayerX - 1 >= 0 && matrix[PlayerX - 1, PlayerY].Walkable)
                                 {
+                                    PickUpBonus(PlayerX - 1, PlayerY);
                                     Step(-1, 0);
                                 }
                                 break;
                             case ConsoleKey.D:
                                 if (PlayerY + 1 <= matrix.Columns && matrix[PlayerX, PlayerY + 1].Walkable)
                                 {
+                                    PickUpBonus(PlayerX, PlayerY+1);
                                     Step(0, 1);
                                 }
                                 break;
                             case ConsoleKey.A:
                                 if (PlayerY - 1 >= 0 && matrix[PlayerX, PlayerY - 1].Walkable)
                                 {
+                                    PickUpBonus(PlayerX, PlayerY-1);
                                     Step(0, -1);
                                 }
                                 break;
                             case ConsoleKey.S:
                                 if (PlayerX + 1 <= matrix.Rows && matrix[PlayerX + 1, PlayerY].Walkable)
                                 {
+                                    PickUpBonus(PlayerX + 1, PlayerY);
                                     Step(1, 0);
                                 }
                                 break;
@@ -191,13 +196,20 @@ namespace Bomberman
         private void Step(int difX, int difY)
         { 
             matrix[PlayerX, PlayerY] = new Space();
+
+            LockConsole();
             Console.SetCursorPosition(PlayerY, PlayerX);
             Console.Write(' ');
+            UnlockConsole();
+
             PlayerX += difX;
             PlayerY += difY;
             matrix[PlayerX, PlayerY] = new Player();
+
+            LockConsole();
             Console.SetCursorPosition(PlayerY, PlayerX);
             Console.Write('I');
+            UnlockConsole();
         }
 
         private void StepFromBomb(int difX, int difY)
@@ -205,8 +217,11 @@ namespace Bomberman
             PlayerX += difX;
             PlayerY += difY;
             matrix[PlayerX, PlayerY] = new Player();
+
+            LockConsole();
             Console.SetCursorPosition(PlayerY, PlayerX);
             Console.Write('I');
+            UnlockConsole();
             
         }
 
@@ -229,8 +244,12 @@ namespace Bomberman
         {
             BombAmount--;
             DisplayBombAmount();
+
+            LockConsole();
             Console.SetCursorPosition(PlayerY, PlayerX);
             Console.Write('@');
+            UnlockConsole();
+
             matrix[PlayerX, PlayerY] = new Bomb();
             BombOn = true;
             BombPosition = new Tuple<int, int>(PlayerX, PlayerY);
@@ -246,12 +265,12 @@ namespace Bomberman
         {
             BombOn = false;
 
-            if (BombPosition.Item2 + 1 <= 9)
+            if (BombPosition.Item2 + 1 <= matrix.Columns)
             {
                 DestroyElem(0, new Tuple<int, int>(BombPosition.Item1, BombPosition.Item2 + 1));
             }
 
-            if (BombPosition.Item1 + 1 <= 4)
+            if (BombPosition.Item1 + 1 <= matrix.Rows)
             {
                 DestroyElem(1, new Tuple<int, int>(BombPosition.Item1 + 1, BombPosition.Item2));
             }
@@ -299,8 +318,11 @@ namespace Bomberman
                     Ruines[row, 1] = position.Item2;
 
                     matrix[position.Item1, position.Item2] = new Ruine();
+
+                    LockConsole();
                     Console.SetCursorPosition(position.Item2, position.Item1);
                     Console.Write('.');
+                    UnlockConsole();
                 }
             }
             else
@@ -316,8 +338,11 @@ namespace Bomberman
                 Ruines[row, 1] = position.Item2;
 
                 matrix[position.Item1, position.Item2] = new Ruine();
+
+                LockConsole();
                 Console.SetCursorPosition(position.Item2, position.Item1);
                 Console.Write('.');
+                UnlockConsole();
             }
 
         }
@@ -329,8 +354,11 @@ namespace Bomberman
                 if (Ruines[i, 0] != -1 && Ruines[i, 1] != -1)
                 {
                     matrix[Ruines[i, 0], Ruines[i, 1]] = new Space();
+
+                    LockConsole();
                     Console.SetCursorPosition(Ruines[i, 1], Ruines[i, 0]);
                     Console.Write(' ');
+                    UnlockConsole();
 
                     Ruines[i, 0] = -1;
                     Ruines[i, 1] = -1;
@@ -340,17 +368,22 @@ namespace Bomberman
 
         private void DisplayLives()
         {
+            LockConsole();
             Console.SetCursorPosition(matrix.Columns + 3, 1);
             Console.Write($"Lives: {Lives}");
+            UnlockConsole();
         }
 
         private void DisplayBombAmount()
         {
+            LockConsole();
             Console.SetCursorPosition(matrix.Columns + 3, 2);
             if (BombAmount > 9)
                 Console.Write($"Bombs: {BombAmount}");
             else
                 Console.Write($"Bombs: {BombAmount} ");
+
+            UnlockConsole();
         }
 
         private void FinalScore()
@@ -362,8 +395,10 @@ namespace Bomberman
 
         private void DisplayScore()
         {
+            LockConsole();
             Console.SetCursorPosition(matrix.Columns+3, 3);
             Console.Write($"Score: {Score}");
+            UnlockConsole();
         }
 
         private void DisplayManual()
@@ -381,111 +416,19 @@ namespace Bomberman
             Console.Clear();
         }
 
-        /*public static void explodeBomb(object obj)
-    {
-        Matrix matrix = (Matrix)obj;
-        bool playerIsFound = false;
-        if (bombX - 1 >= 0 && matrix[bombX - 1, bombY].Destroyable == true)
+        public void LockConsole()
         {
-            if (matrix[bombX - 1, bombY].Name.Equals("brick"))
+            while(ConsoleIsLocked)
             {
-                Session.brickAmount--;
-                Session.score += 100;
+
             }
-            matrix[bombX - 1, bombY] = new Elem('.', "ruine", false, false);
-            Console.SetCursorPosition(bombY, bombX - 1);
-            Console.Write('.');
+
+            ConsoleIsLocked = true;
         }
 
-        if (bombX + 1 <= 4 && matrix[bombX + 1, bombY].Destroyable == true)
+        public void UnlockConsole()
         {
-            if (matrix[bombX + 1, bombY].Name.Equals("brick"))
-            {
-                Session.brickAmount--;
-                Session.score += 100;
-            }
-
-            matrix[bombX + 1, bombY] = new Elem('.', "ruine", false, false);
-            Console.SetCursorPosition(bombY, bombX + 1);
-            Console.Write('.');
+            ConsoleIsLocked = false;
         }
-
-        if (bombY - 1 >= 0 && matrix[bombX, bombY - 1].Destroyable == true)
-        {
-            if (matrix[bombX, bombY - 1].Name.Equals("brick"))
-            {
-                Session.brickAmount--;
-                Session.score += 100;
-            }
-
-            matrix[bombX, bombY - 1] = new Elem('.', "ruine", false, false);
-            Console.SetCursorPosition(bombY - 1, bombX);
-            Console.Write('.');
-        }
-
-        if (bombY + 1 <= 9 && matrix[bombX, bombY + 1].Destroyable == true)
-        {
-            if (matrix[bombX, bombY + 1].Name.Equals("brick"))
-            {
-                Session.brickAmount--;
-                Session.score += 100;
-            }
-            matrix[bombX, bombY + 1] = new Elem('.', "ruine", false, false);
-            Console.SetCursorPosition(bombY + 1, bombX);
-            Console.Write('.');
-        }
-
-        matrix[bombX, bombY] = new Elem('.', "ruine", false, false);
-        Console.SetCursorPosition(bombY, bombX);
-        Console.Write('.');
-        bombOn = false;
-
-        displayScore();
-
-        for (int i = 0; i < 5; i++)
-        {
-            for (int j = 0; j < 10; j++)
-            {
-                if (matrix[i, j].Name.Equals("player"))
-                {
-                    playerIsFound = true;
-                    break;
-                }
-                if (playerIsFound)
-                    break;
-            }
-        }
-
-        Timer tm = new Timer(clearRuines, matrix, 800, -1);
-
-        if (!playerIsFound)
-        {
-            if (Session.lives > 1)
-            {
-                Session.lives--;
-                displayLives();
-                matrix[0, 0] = new Elem('I', "player", true, false);
-                playerX = 0;
-                playerY = 0;
-                Console.SetCursorPosition(0, 0);
-                Console.Write("I");
-            }
-            else
-            {
-                Session.lives--;
-                displayLives();
-                Session.End();
-                return;
-            }
-        }
-
-        if (Session.bombAmount == 0 && Session.brickAmount != 0)
-            Session.End();
-
-        if (Session.brickAmount <= 0)
-            Session.Win();
-    }*/
-
-       
     }
 }

@@ -39,12 +39,10 @@ namespace Bomberman
 
         public void DisplayMatrix()
         {
-            int rows = mas.GetUpperBound(0) + 1;
-            int columns = mas.Length / rows;
 
-            for (int i = 0; i < rows; i++)
+            for (int i = 0; i <= Rows; i++)
             {
-                for (int j = 0; j < columns; j++)
+                for (int j = 0; j <= Columns; j++)
                 {
                     Console.SetCursorPosition(j, i);
                     Console.Write(mas[i, j].Symbol);

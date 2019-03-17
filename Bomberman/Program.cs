@@ -8,29 +8,15 @@ namespace Bomberman
     {
         static void Main(string[] args)
         {
-            //Level level = new Level(1);
-            string json = System.IO.File.ReadAllText(@"C:\Users\user\source\repos\Bomberman\Bomberman\levels\level1.json");
+            //Level level = new Level(2);
+            string json = System.IO.File.ReadAllText(@"C:\Users\user\source\repos\Bomberman\Bomberman\levels\level2.json");
             Level level = JsonConvert.DeserializeObject<Level>(json);
+            //string json = JsonConvert.SerializeObject(level);
+            //System.IO.File.WriteAllText(@"C:\Users\user\source\repos\Bomberman\Bomberman\levels\level2.json", json);
             Session session = new Session(level);
             session.Start();
             
         }
-
-
-        /*public static void pickUpBonus(Elem elem)
-        {
-            if (elem.Name.Equals("addBomb"))
-            {
-                Session.bombAmount++;
-                displayBombAmount();
-            }
-
-            if (elem.Name.Equals("addLife"))
-            {
-                Session.lives++;
-                displayLives();
-            }
-        }*/
 
         /*
          * generate

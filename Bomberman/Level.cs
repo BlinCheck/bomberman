@@ -17,36 +17,40 @@ namespace Bomberman
 
         public Level(int number)
         {
-            if(number == 1)
+            if(number == 2)
             {
-                BrickAmount = 21;
+                BrickAmount = 18;
                 BombAmount = 14;
-                Lives = 2;
+                Lives = 1;
                 PlayerX = 0;
                 PlayerY = 0;
                 Minutes = 2;
-                Seconds = 30;
+                Seconds = 0;
                 matrix = new Matrix
                 {
-                    mas = MakeLevelOneMatrix()
+                    mas = MakeLevelTwoMatrix()
                 };
-                matrix.Columns = 10;
-                matrix.Rows = 4;
+                matrix.Columns = 5;
+                matrix.Rows = 6;
             }
         }
 
-        private Elem[,] MakeLevelOneMatrix()
+        private Elem[,] MakeLevelTwoMatrix()
         {
             Space space = new Space();
             Player player = new Player();
             Brick brick = new Brick();
             Concrete concrete = new Concrete();
+            AdditionalLife addLife = new AdditionalLife();
+            AdditionalBomb addBomb = new AdditionalBomb();
             Elem[,] mas = new Elem[,] {
-                {player, space, space, brick, space, space, brick, brick, space, brick},
-                {space, concrete, brick, concrete, space, concrete, space, concrete, space, concrete},
-                {brick, brick, space, brick, brick, space, brick, brick, brick, brick},
-                {space, concrete, brick, concrete, space, concrete, space, concrete, brick, concrete},
-                {space, brick, brick, brick, space, space, brick, brick, brick, space}
+                {player, space, space, brick, brick, addBomb},
+                {space, brick, brick, space, concrete, space},
+                {concrete, space, brick, brick, addLife, space},
+                {concrete, brick, concrete, concrete, concrete, brick},
+                {brick, space, brick, concrete, addBomb, space},
+                {brick, brick, brick, concrete, space, brick},
+                {concrete, space, brick, brick, brick, brick}
             };
             return mas;
         }
