@@ -24,12 +24,12 @@ namespace Bomberman
         {
             if (Minutes < 10)
             {
-                Console.SetCursorPosition(13, 0);
+                Console.SetCursorPosition(Caller.matrix.Columns + 3, 0);
                 Console.Write($"Time: 0{Minutes}:");
             }
             else
             {
-                Console.SetCursorPosition(13, 0);
+                Console.SetCursorPosition(Caller.matrix.Columns + 3, 0);
                 Console.Write($"Time: {Minutes}:");
             }
 

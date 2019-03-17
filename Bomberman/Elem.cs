@@ -9,7 +9,7 @@ namespace Bomberman
         public char Symbol { get; set; }
         public string Name { get; set; }
         public bool Destroyable { get; set; }
-        public bool Step { get; set; }
+        public bool Walkable { get; set; }
 
 
         public Elem(char sym, string name, bool destroyable, bool step)
@@ -17,7 +17,7 @@ namespace Bomberman
             Symbol = sym;
             Name = name;
             Destroyable = destroyable;
-            Step = step;
+            Walkable = step;
         }
     }
 }

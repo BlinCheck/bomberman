@@ -6,7 +6,9 @@ namespace Bomberman
 {
     class Matrix
     {
-        Elem[,] mas;
+        public Elem[,] mas;
+        public int Rows {get; set;}
+        public int Columns { get; set; }
 
         public Elem this[int i, int j]
         {
@@ -22,16 +24,17 @@ namespace Bomberman
 
         public void GenerateMatrix()
         {
-            mas = new Elem[,] { {new Player(), new Space(), new Space(), new Brick(), new Space(), new Space(),
-                new Brick(), new Brick(), new Space(), new Brick()},
-                {new Space(), new Concrete(), new Brick(), new Concrete(), new Space(), new Concrete(), new Space(),
-                new Concrete(), new Space(), new Concrete()},
-                {new Brick(), new Brick(), new Space(), new Brick(), new Brick(), new Space(), new Brick(),
-                new Brick(), new Brick(), new Brick()},
-                {new Space(), new Concrete(), new Brick(), new Concrete(), new Space(), new Concrete(), new Space(),
-                new Concrete(), new Brick(), new Concrete()},
-                {new Space(), new Brick(), new Brick(), new Brick(), new Space(), new Space(), new Brick(),
-                new Brick(), new Brick(), new Space()} };
+            Space space = new Space();
+            Player player = new Player();
+            Brick brick = new Brick();
+            Concrete concrete = new Concrete();
+            mas = new Elem[,] { 
+                {player, space, space, brick, space, space, brick, brick, space, brick},
+                {space, concrete, brick, concrete, space, concrete, space, concrete, space, concrete},
+                {brick, brick, space, brick, brick, space, brick, brick, brick, brick},
+                {space, concrete, brick, concrete, space, concrete, space, concrete, brick, concrete},
+                {space, brick, brick, brick, space, space, brick, brick, brick, space}
+            };
         }
 
         public void DisplayMatrix()
