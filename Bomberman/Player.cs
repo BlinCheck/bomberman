@@ -6,7 +6,7 @@ namespace Bomberman
 {
     class Player : Elem
     {
-        public Player():base('I', "player", true, false)
+        public Player():base('I', "player", true, false, ConsoleColor.Yellow)
         {
 
         }

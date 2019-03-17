@@ -44,6 +44,7 @@ namespace Bomberman
             {
                 for (int j = 0; j <= Columns; j++)
                 {
+                    Console.ForegroundColor = mas[i, j].Color;
                     Console.SetCursorPosition(j, i);
                     Console.Write(mas[i, j].Symbol);
                 }

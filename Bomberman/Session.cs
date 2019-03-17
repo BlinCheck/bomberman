@@ -62,6 +62,7 @@ namespace Bomberman
         public void End()
         {
             IsAlive = false;
+            Console.ForegroundColor = ConsoleColor.White;
             Console.SetCursorPosition(0, matrix.Rows+3);
             Console.WriteLine("Game Over :(");
             Console.WriteLine("Press any key to return to menu");
@@ -73,6 +74,7 @@ namespace Bomberman
             IsAlive = false;
             FinalScore();
             DisplayScore();
+            Console.ForegroundColor = ConsoleColor.White;
             Console.SetCursorPosition(0, matrix.Rows+3);
             Console.WriteLine($"Congratulations, {PlayerName}!");
             Console.WriteLine("You passed the level");
@@ -208,6 +210,7 @@ namespace Bomberman
 
             LockConsole();
             Console.SetCursorPosition(PlayerY, PlayerX);
+            Console.ForegroundColor = ConsoleColor.Yellow;
             Console.Write('I');
             UnlockConsole();
         }
@@ -219,6 +222,7 @@ namespace Bomberman
             matrix[PlayerX, PlayerY] = new Player();
 
             LockConsole();
+            Console.ForegroundColor = ConsoleColor.Yellow;
             Console.SetCursorPosition(PlayerY, PlayerX);
             Console.Write('I');
             UnlockConsole();
@@ -246,6 +250,7 @@ namespace Bomberman
             DisplayBombAmount();
 
             LockConsole();
+            Console.ForegroundColor = ConsoleColor.Red;
             Console.SetCursorPosition(PlayerY, PlayerX);
             Console.Write('@');
             UnlockConsole();
@@ -320,6 +325,7 @@ namespace Bomberman
                     matrix[position.Item1, position.Item2] = new Ruine();
 
                     LockConsole();
+                    Console.ForegroundColor = ConsoleColor.DarkRed;
                     Console.SetCursorPosition(position.Item2, position.Item1);
                     Console.Write('.');
                     UnlockConsole();
@@ -340,6 +346,7 @@ namespace Bomberman
                 matrix[position.Item1, position.Item2] = new Ruine();
 
                 LockConsole();
+                Console.ForegroundColor = ConsoleColor.DarkRed;
                 Console.SetCursorPosition(position.Item2, position.Item1);
                 Console.Write('.');
                 UnlockConsole();
@@ -369,6 +376,7 @@ namespace Bomberman
         private void DisplayLives()
         {
             LockConsole();
+            Console.ForegroundColor = ConsoleColor.White;
             Console.SetCursorPosition(matrix.Columns + 3, 1);
             Console.Write($"Lives: {Lives}");
             UnlockConsole();
@@ -377,6 +385,7 @@ namespace Bomberman
         private void DisplayBombAmount()
         {
             LockConsole();
+            Console.ForegroundColor = ConsoleColor.White;
             Console.SetCursorPosition(matrix.Columns + 3, 2);
             if (BombAmount > 9)
                 Console.Write($"Bombs: {BombAmount}");
@@ -396,6 +405,7 @@ namespace Bomberman
         private void DisplayScore()
         {
             LockConsole();
+            Console.ForegroundColor = ConsoleColor.White;
             Console.SetCursorPosition(matrix.Columns+3, 3);
             Console.Write($"Score: {Score}");
             UnlockConsole();
@@ -404,6 +414,7 @@ namespace Bomberman
         private void DisplayManual()
         {
             Console.Clear();
+            Console.ForegroundColor = ConsoleColor.White;
             Console.WriteLine(" Welcome to Bomberman!");
             Console.WriteLine(" This is short manual for the game:");
             Console.WriteLine(" Use W, A, S, D to move");

@@ -6,7 +6,7 @@ namespace Bomberman
 {
     class Concrete : Elem
     {
-        public Concrete() : base('O', "concrete", false, false)
+        public Concrete() : base('O', "concrete", false, false, ConsoleColor.DarkGray)
         {
 
         }

@@ -4,7 +4,11 @@ using System.Text;
 
 namespace Bomberman
 {
-    class Artifact
+    class Artifact : Bonus
     {
+        public Artifact() : base ('+', "artifact")
+        {
+
+        }
     }
 }

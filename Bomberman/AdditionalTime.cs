@@ -4,7 +4,11 @@ using System.Text;
 
 namespace Bomberman
 {
-    class AdditionalTime
+    class AdditionalTime : Bonus
     {
+        public AdditionalTime() : base('T', "addTime")
+        {
+
+        }
     }
 }

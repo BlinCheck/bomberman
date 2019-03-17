@@ -6,7 +6,7 @@ namespace Bomberman
 {
     class Brick : Elem
     {
-        public Brick() : base('#', "brick", true, false)
+        public Brick() : base('#', "brick", true, false, ConsoleColor.DarkYellow)
         {
 
         }

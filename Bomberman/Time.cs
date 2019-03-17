@@ -23,6 +23,7 @@ namespace Bomberman
         public void DisplayTimer(Object sender, ElapsedEventArgs e)
         {
             Caller.LockConsole();
+            Console.ForegroundColor = ConsoleColor.White;
             if (Minutes < 10)
             {
                 Console.SetCursorPosition(Caller.matrix.Columns + 3, 0);

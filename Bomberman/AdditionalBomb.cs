@@ -4,9 +4,9 @@ using System.Text;
 
 namespace Bomberman
 {
-    class AdditionalBomb : Elem
+    class AdditionalBomb : Bonus
     {
-        public AdditionalBomb() : base('*', "addBomb", true, true)
+        public AdditionalBomb() : base('*', "addBomb")
         {
 
         }

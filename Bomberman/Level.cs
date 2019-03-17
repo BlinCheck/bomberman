@@ -33,6 +33,37 @@ namespace Bomberman
                 matrix.Columns = 5;
                 matrix.Rows = 6;
             }
+            if(number == 1)
+            {
+                BrickAmount = 21;
+                BombAmount = 16;
+                Lives = 2;
+                PlayerX = 0;
+                PlayerY = 0;
+                Minutes = 2;
+                matrix = new Matrix
+                {
+                    mas = MakeLevelOneMatrix()
+                };
+                matrix.Columns = 9;
+                matrix.Rows = 4;
+            }
+        }
+
+        private Elem[,] MakeLevelOneMatrix()
+        {
+            Space space = new Space();
+            Player player = new Player();
+            Brick brick = new Brick();
+            Concrete concrete = new Concrete();
+            Elem[,] mas = new Elem[,] {
+                {player, space, space, brick, space, space, brick, brick, space, brick},
+                {space, concrete, brick, concrete, space, concrete, space, concrete, space, concrete},
+                {brick, brick, space, brick, brick, space, brick, brick, brick, brick},
+                {space, concrete, brick, concrete, space, concrete, space, concrete, brick, concrete},
+                {space, brick, brick, brick, space, space, brick, brick, brick, space}
+            };
+            return mas;
         }
 
         private Elem[,] MakeLevelTwoMatrix()
