@@ -33,6 +33,7 @@ namespace Bomberman
                 matrix.Columns = 5;
                 matrix.Rows = 6;
             }
+
             if(number == 1)
             {
                 BrickAmount = 21;
@@ -48,6 +49,23 @@ namespace Bomberman
                 matrix.Columns = 9;
                 matrix.Rows = 4;
             }
+
+            if(number == 3)
+            {
+                BrickAmount = 40;
+                BombAmount = 33;
+                Lives = 2;
+                PlayerX = 5;
+                PlayerY = 3;
+                Minutes = 3;
+                Seconds = 40;
+                matrix = new Matrix
+                {
+                    mas = MakeLevelThreeMatrix()
+                };
+                matrix.Columns = 9;
+                matrix.Rows = 9;
+            }
         }
 
         private Elem[,] MakeLevelOneMatrix()
@@ -56,6 +74,7 @@ namespace Bomberman
             Player player = new Player();
             Brick brick = new Brick();
             Concrete concrete = new Concrete();
+
             Elem[,] mas = new Elem[,] {
                 {player, space, space, brick, space, space, brick, brick, space, brick},
                 {space, concrete, brick, concrete, space, concrete, space, concrete, space, concrete},
@@ -74,6 +93,7 @@ namespace Bomberman
             Concrete concrete = new Concrete();
             AdditionalLife addLife = new AdditionalLife();
             AdditionalBomb addBomb = new AdditionalBomb();
+
             Elem[,] mas = new Elem[,] {
                 {player, space, space, brick, brick, addBomb},
                 {space, brick, brick, space, concrete, space},
@@ -82,6 +102,34 @@ namespace Bomberman
                 {brick, space, brick, concrete, addBomb, space},
                 {brick, brick, brick, concrete, space, brick},
                 {concrete, space, brick, brick, brick, brick}
+            };
+            return mas;
+        }
+
+        private Elem[,] MakeLevelThreeMatrix()
+        {
+            Space space = new Space();
+            Player player = new Player();
+            Brick brick = new Brick();
+            Concrete concrete = new Concrete();
+            AdditionalLife addLife = new AdditionalLife();
+            AdditionalBomb addBomb = new AdditionalBomb();
+            AdditionalTime addTime = new AdditionalTime();
+            Artifact artifact = new Artifact();
+            ScoreMultiplier scoreMultiplier = new ScoreMultiplier();
+
+            Elem[,] mas = new Elem[,]
+            {
+                {brick, addTime, brick, space, brick, concrete, brick, brick, space, concrete},
+                {brick, concrete, brick, concrete, concrete, concrete, scoreMultiplier, brick, space, brick},
+                {space, brick, brick, brick, space, concrete, brick, concrete, concrete, space},
+                {brick, concrete, addBomb, concrete, brick, concrete, space, brick, brick, brick},
+                {space, brick, concrete, concrete, brick, addBomb, brick, concrete, space, artifact},
+                {artifact, concrete, concrete, player, space, brick, concrete, concrete, concrete, brick},
+                {space, addBomb, concrete, concrete, space, brick, space, brick, concrete, brick},
+                {brick, concrete, brick, brick, brick, concrete, brick, brick, concrete, addLife},
+                {brick, concrete, space, concrete, brick, concrete, concrete, space, concrete, brick},
+                {space, brick, brick, concrete, space, brick, brick, space, brick, space}
             };
             return mas;
         }

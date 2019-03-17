@@ -37,7 +37,6 @@ namespace Bomberman
         public Session(Level level)
         {
             this.level = level;
-            matrix = level.matrix;
             time = new Time(level.Minutes, level.Seconds, this);
             InitRuines();
             Lives = level.Lives;
@@ -236,11 +235,25 @@ namespace Bomberman
                 BombAmount++;
                 DisplayBombAmount();
             }
-
-            if (matrix[x, y].Name.Equals("addLife"))
+            else if (matrix[x, y].Name.Equals("addLife"))
             {
                 Lives++;
                 DisplayLives();
+            }
+            else if (matrix[x, y].Name.Equals("addTime"))
+            {
+                time.Minutes++;
+                time.DisplayTimer(null, null);
+            }
+            else if (matrix[x, y].Name.Equals("artifact"))
+            {
+                Score += 200;
+                DisplayScore();
+            }
+            else if(matrix[x,y].Name.Equals("scoreMultiplier"))
+            {
+                Score *= 2;
+                DisplayScore();
             }
         }
 

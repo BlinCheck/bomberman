@@ -21,11 +21,5 @@ namespace Bomberman
             Walkable = step;
             Color = color;
         }
-
-        public Elem(bool destroyable, bool walkable)
-        {
-            Destroyable = destroyable;
-            Walkable = walkable;
-        }
     }
 }

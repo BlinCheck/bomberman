@@ -6,14 +6,7 @@ namespace Bomberman
 {
     class Bonus : Elem
     {
-        public Bonus(char sym, string name) : this ()
-        {
-            Symbol = sym;
-            Name = name;
-            Color = ConsoleColor.Magenta;
-        }
-
-        public Bonus() : base(true, true)
+        public Bonus(char sym, string name) : base(sym, name, true, true, ConsoleColor.Magenta)
         {
 
         }
