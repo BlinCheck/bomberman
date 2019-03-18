@@ -60,16 +60,17 @@ namespace Bomberman
 
         public void End()
         {
+            time.t.Elapsed -= time.DisplayTimer;
             IsAlive = false;
             Console.ForegroundColor = ConsoleColor.White;
             Console.SetCursorPosition(0, matrix.Rows+3);
             Console.WriteLine("Game Over :(");
             Console.WriteLine("Press any key to return to menu");
-            time.t.Elapsed -= time.DisplayTimer;
         }
 
         private void Win()
         {
+            time.t.Elapsed -= time.DisplayTimer;
             IsAlive = false;
             FinalScore();
             DisplayScore();
@@ -78,13 +79,12 @@ namespace Bomberman
             Console.WriteLine($"Congratulations, {PlayerName}!");
             Console.WriteLine("You passed the level");
             Console.WriteLine("Press any key to return to menu");
-            time.t.Elapsed -= time.DisplayTimer;
         }
 
         public void Start()
         {
-            DisplayManual();
             IsAlive = true;
+            Console.Clear();
             Console.Write(" Enter your name: ");
             PlayerName = Console.ReadLine();
             Console.WriteLine($"\n Welcome, {PlayerName}!");
@@ -104,12 +104,14 @@ namespace Bomberman
             DisplayBombAmount();
 
             Move();
+            Menu menu = new Menu();
+            menu.DisplayMenu();
         }
 
         private void Move()
         {
             ConsoleKeyInfo key = new ConsoleKeyInfo();
-            while (IsAlive && key.Key != ConsoleKey.Q)
+            while (true)
             {
                 if (IsAlive)
                 {
@@ -131,14 +133,14 @@ namespace Bomberman
                             case ConsoleKey.D:
                                 if (PlayerY + 1 <= matrix.Columns && matrix[PlayerX, PlayerY + 1].Walkable)
                                 {
-                                    PickUpBonus(PlayerX, PlayerY+1);
+                                    PickUpBonus(PlayerX, PlayerY + 1);
                                     Step(0, 1);
                                 }
                                 break;
                             case ConsoleKey.A:
                                 if (PlayerY - 1 >= 0 && matrix[PlayerX, PlayerY - 1].Walkable)
                                 {
-                                    PickUpBonus(PlayerX, PlayerY-1);
+                                    PickUpBonus(PlayerX, PlayerY - 1);
                                     Step(0, -1);
                                 }
                                 break;
@@ -149,13 +151,15 @@ namespace Bomberman
                                     Step(1, 0);
                                 }
                                 break;
-                                case ConsoleKey.E:
-                                    if (BombOn == false)
-                                        SetBomb();
-                                    break;
+                            case ConsoleKey.E:
+                                if (BombOn == false)
+                                    SetBomb();
+                                break;
                         }
                     }
                 }
+                else
+                    return;
             }
         }
 
@@ -325,26 +329,28 @@ namespace Bomberman
 
         private void DestroyElem(int row, Tuple<int, int> position)
         {
-            if(matrix[position.Item1, position.Item2].Name.Equals("player"))
+            if(PlayerX == position.Item1 && PlayerY == position.Item2)
             {
                 Lives--;
                 DisplayLives();
-                if (Lives == 0)
+                if (Lives != 0)
                 {
-                    PlayerIsDead = true;
-                    Ruines[row, 0] = position.Item1;
-                    Ruines[row, 1] = position.Item2;
-
-                    matrix[position.Item1, position.Item2] = new Ruine();
+                    PlayerX = level.PlayerX;
+                    PlayerY = level.PlayerY;
+                    matrix[PlayerX, PlayerY] = new Player();
 
                     LockConsole();
-                    Console.ForegroundColor = ConsoleColor.DarkRed;
-                    Console.SetCursorPosition(position.Item2, position.Item1);
-                    Console.Write('.');
+                    Console.ForegroundColor = ConsoleColor.Yellow;
+                    Console.SetCursorPosition(PlayerY, PlayerX);
+                    Console.Write("I");
                     UnlockConsole();
                 }
+                else
+                {
+                    PlayerIsDead = true;
+                }
             }
-            else
+
             if(matrix[position.Item1, position.Item2].Destroyable)
             {
                 if(matrix[position.Item1, position.Item2].Name.Equals("brick"))
@@ -422,22 +428,6 @@ namespace Bomberman
             Console.SetCursorPosition(matrix.Columns+3, 3);
             Console.Write($"Score: {Score}");
             UnlockConsole();
-        }
-
-        private void DisplayManual()
-        {
-            Console.Clear();
-            Console.ForegroundColor = ConsoleColor.White;
-            Console.WriteLine(" Welcome to Bomberman!");
-            Console.WriteLine(" This is short manual for the game:");
-            Console.WriteLine(" Use W, A, S, D to move");
-            Console.WriteLine(" Use E to set the bomb");
-            Console.WriteLine(" You can quit game by pressing Q");
-            Console.WriteLine(" You can pick up additional bombs(*) and lives(L)");
-            Console.WriteLine(" Destroy all bricks(#) to win");
-            Console.WriteLine(" Press any key to continue");
-            Console.ReadKey(true);
-            Console.Clear();
         }
 
         public void LockConsole()

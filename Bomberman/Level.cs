@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Newtonsoft.Json;
+using System;
 using System.Collections.Generic;
 using System.Text;
 
@@ -15,7 +16,15 @@ namespace Bomberman
         public int Seconds { get; set; }
         public Matrix matrix;
 
-        public Level(int number)
+        public static void Deserializer(string json)
+        {
+            Level level = new Level();
+            level = JsonConvert.DeserializeObject<Level>(json);
+            Session session = new Session(level);
+            session.Start();
+        }
+
+       /* public Level(int number)
         {
             if(number == 2)
             {
@@ -132,6 +141,6 @@ namespace Bomberman
                 {space, brick, brick, concrete, space, brick, brick, space, brick, space}
             };
             return mas;
-        }
+        }*/
     }
 }
