@@ -7,8 +7,8 @@ namespace Bomberman
 {
     class Time
     {
-        public int Minutes;
-        public int Seconds;
+        public int Minutes { get; set; }
+        public int Seconds { get; set; }
         public Timer t;
         public Session Caller;
 

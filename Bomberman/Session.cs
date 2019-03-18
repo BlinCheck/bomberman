@@ -2,36 +2,50 @@
 using System.Timers;
 using System.Collections.Generic;
 using System.Text;
+using System.Threading;
+using Timer = System.Timers.Timer;
 
 namespace Bomberman
 {
     class Session
     {
         public bool ConsoleIsLocked = false;
-        public bool IsAlive;
+        public bool IsAlive { get; set; }
         public bool PlayerIsDead = false;
-        public int BrickAmount = 21;
-        public int BombAmount = 14;
-        public int Lives = 2;
-        public int Score = 0;
-        public int PlayerX = 0;
-        public int PlayerY = 0;
+        public int BrickAmount { get; set; }
+        public int BombAmount { get; set; }
+        public int Lives { get; set; }
+        public int Score { get; set; }
+        public int PlayerX { get; set; }
+        public int PlayerY { get; set; }
         public bool BombOn = false;
         public Tuple<int, int> BombPosition;
-        public string PlayerName;
+        public string PlayerName { get; set; }
         public int[,] Ruines = new int[5, 2];
         public Matrix matrix;
-        Time time;
+        public Time time;
         Timer bombExploder;
         Timer ruineCleaner;
+        Timer messageCleaner;
         Level level;
 
-        public Session()
+        public Session(int size)
         {
             matrix = new Matrix();
-            matrix.GenerateMatrix();
-            time = new Time(2, 30, this);
+            BrickAmount = matrix.GenerateRandomMatrix(size);
+            time = new Time(3, 0, this);
+            PlayerX = 0;
+            PlayerY = 0;
+            BombAmount = BrickAmount - 4;
+            Lives = 2;
+            Score = 0;
+            matrix.Rows = size - 1;
+            matrix.Columns = size - 1;
+            level = new Level();
+            level.PlayerX = PlayerX;
+            level.PlayerY = PlayerY;
             InitRuines();
+            Start();
         }
 
         public Session(Level level)
@@ -45,6 +59,7 @@ namespace Bomberman
             PlayerX = level.PlayerX;
             PlayerY = level.PlayerY;
             matrix = level.matrix;
+            Score = level.Score;
         }
 
         private void InitRuines()
@@ -56,6 +71,22 @@ namespace Bomberman
                     Ruines[i, j] = -1;
                 }
             }
+        }
+
+        public void Save()
+        {
+            level.Save(this);
+            LockConsole();
+            Console.ForegroundColor = ConsoleColor.White;
+            Console.SetCursorPosition(0, matrix.Rows + 2);
+            Console.Write("Progress succesfully saved");
+            UnlockConsole();
+
+            messageCleaner = new Timer(2000);
+            messageCleaner.Elapsed += ClearMessage;
+            messageCleaner.Enabled = true;
+            messageCleaner.AutoReset = false;
+
         }
 
         public void End()
@@ -155,12 +186,28 @@ namespace Bomberman
                                 if (BombOn == false)
                                     SetBomb();
                                 break;
+                            case ConsoleKey.B:
+                                Save();
+                                break;
+                            case ConsoleKey.Q:
+                                ReturnToMenu();
+                                break;
                         }
                     }
                 }
                 else
                     return;
             }
+        }
+
+        private void ReturnToMenu()
+        {
+            time.t.Elapsed -= time.DisplayTimer;
+            IsAlive = false;
+            Console.ForegroundColor = ConsoleColor.White;
+            Console.SetCursorPosition(0, matrix.Rows + 3);
+            Console.Write("Returning to menu...");
+            Thread.Sleep(1000);
         }
 
         private void MoveFromBomb(Matrix matrix, ConsoleKeyInfo key)
@@ -281,6 +328,14 @@ namespace Bomberman
             bombExploder.Enabled = true;
             bombExploder.AutoReset = false;
 
+        }
+
+        private void ClearMessage(Object sender, ElapsedEventArgs e)
+        {
+            LockConsole();
+            Console.SetCursorPosition(0, matrix.Rows + 2);
+            Console.Write("                                       ");
+            UnlockConsole();
         }
 
         private void ExplodeBomb(Object sender, ElapsedEventArgs e)

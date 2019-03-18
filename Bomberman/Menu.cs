@@ -30,7 +30,9 @@ namespace Bomberman
             Console.WriteLine(" Welcome to Bomberman!");
             Console.WriteLine(" This is short manual for the game:");
             Console.WriteLine(" Use W, A, S, D to move");
-            Console.WriteLine(" Use E to set the bomb");
+            Console.WriteLine(" E: set the bomb");
+            Console.WriteLine(" B: save progress");
+            Console.WriteLine(" Q: return to menu");
             Console.WriteLine(" During game you can pick up different bonuses:");
             Console.WriteLine(" * - Additioal bomb");
             Console.WriteLine(" L - Additional life");
@@ -110,6 +112,9 @@ namespace Bomberman
             Console.WriteLine(" Level 1");
             Console.WriteLine(" Level 2");
             Console.WriteLine(" Level 3");
+            Console.WriteLine(" Level 4");
+            Console.WriteLine(" Generate random level");
+            Console.WriteLine(" Continue from last save");
             Console.WriteLine(" Back");
             LevelSelector();
         }
@@ -138,7 +143,7 @@ namespace Bomberman
                         }
                         break;
                     case ConsoleKey.DownArrow:
-                        if (row < 4)
+                        if (row < 7)
                         {
                             Console.SetCursorPosition(0, row++);
                             Console.Write(" ");
@@ -170,11 +175,100 @@ namespace Bomberman
                     json = System.IO.File.ReadAllText(@"C:\Users\user\source\repos\Bomberman\Bomberman\levels\level3.json");
                     break;
                 case 4:
+                    json = System.IO.File.ReadAllText(@"C:\Users\user\source\repos\Bomberman\Bomberman\levels\level4.json");
+                    break;
+                case 5:
+                    json = "random";
+                    break;
+                case 6:
+                    json = System.IO.File.ReadAllText(@"C:\Users\user\source\repos\Bomberman\Bomberman\levels\Save.json");
+                    break;
+                case 7:
                     DisplayMenu();
                     break;
             }
+            if(json.Equals("random"))
+            {
+                DisplayMatrixSizes();
+            }
+            else
+                Level.Deserializer(json);
+        }
 
-            Level.Deserializer(json);
+        private void DisplayMatrixSizes()
+        {
+            Console.Clear();
+            Console.SetCursorPosition(3, 0);
+            Console.WriteLine("Choose field size:");
+            Console.WriteLine(" 6x6");
+            Console.WriteLine(" 7x7");
+            Console.WriteLine(" 8x8");
+            Console.WriteLine(" 9x9");
+            Console.WriteLine(" 10x10");
+            MatrixSizeSelector();
+        }
+
+        private void MatrixSizeSelector()
+        {
+            NewMenu = true;
+            int row = 1;
+            Console.SetCursorPosition(0, row);
+            Console.Write(">");
+            ConsoleKeyInfo key = new ConsoleKeyInfo();
+
+            while(NewMenu)
+            {
+                key = Console.ReadKey(true);
+
+                switch (key.Key)
+                {
+                    case ConsoleKey.UpArrow:
+                        if (row > 1)
+                        {
+                            Console.SetCursorPosition(0, row--);
+                            Console.Write(" ");
+                            Console.SetCursorPosition(0, row);
+                            Console.Write(">");
+                        }
+                        break;
+                    case ConsoleKey.DownArrow:
+                        if (row < 5)
+                        {
+                            Console.SetCursorPosition(0, row++);
+                            Console.Write(" ");
+                            Console.SetCursorPosition(0, row);
+                            Console.Write(">");
+                        }
+                        break;
+                    case ConsoleKey.Enter:
+                        ChooseMatrixSize(row);
+                        NewMenu = false;
+                        break;
+                }
+            }
+        }
+
+        private void ChooseMatrixSize(int row)
+        {
+            Session session;
+            switch (row)
+            {
+                case 1:
+                    session = new Session(6);
+                    break;
+                case 2:
+                    session = new Session(7);
+                    break;
+                case 3:
+                    session = new Session(8);
+                    break;
+                case 4:
+                    session = new Session(9);
+                    break;
+                case 5:
+                    session = new Session(10);
+                    break;
+            }
         }
     }
 }

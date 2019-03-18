@@ -14,6 +14,7 @@ namespace Bomberman
         public int PlayerY { get; set; }
         public int Minutes { get; set; }
         public int Seconds { get; set; }
+        public int Score { get; set; }
         public Matrix matrix;
 
         public static void Deserializer(string json)
@@ -22,6 +23,23 @@ namespace Bomberman
             level = JsonConvert.DeserializeObject<Level>(json);
             Session session = new Session(level);
             session.Start();
+        }
+
+
+        public void Save(Session session)
+        {
+            Minutes = session.time.Minutes;
+            Seconds = session.time.Seconds;
+            Lives = session.Lives;
+            BrickAmount = session.BrickAmount;
+            BombAmount = session.BombAmount;
+            PlayerX = session.PlayerX;
+            PlayerY = session.PlayerY;
+            matrix = session.matrix;
+            Score = session.Score;
+
+            string json = JsonConvert.SerializeObject(this);
+            System.IO.File.WriteAllText(@"C:\Users\user\source\repos\Bomberman\Bomberman\levels\Save.json", json);
         }
 
        /* public Level(int number)
