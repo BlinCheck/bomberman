@@ -7,8 +7,28 @@ namespace Bomberman
 {
     class Time
     {
+        private int seconds;
         public int Minutes { get; set; }
-        public int Seconds { get; set; }
+        public int Seconds {
+            get { return seconds; }
+            set
+            {
+                if(value > 60)
+                {
+                    Minutes++;
+                    seconds = value - 60;
+                }
+                else if(value < 0)
+                {
+                    Minutes--;
+                    seconds = 60 + value;
+                }
+                else
+                {
+                    seconds = value;
+                }
+            }
+        }
         public Timer t;
         public Session Caller;
 

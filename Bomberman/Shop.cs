@@ -15,6 +15,7 @@ namespace Bomberman
 
         public void DisplayShop(Session session)
         {
+            session.DisplayCoins();
             session.LockConsole();
             Console.ForegroundColor = ConsoleColor.White;
             Console.SetCursorPosition(session.matrix.Columns + 16, 0);
@@ -91,7 +92,7 @@ namespace Bomberman
                 case 3:
                     if(session.Coins >= 2)
                     {
-                        session.time.Seconds += 30;
+                        session.time.Seconds += 40;
                         session.time.DisplayTimer(null, null);
                         session.Coins -= 2;
                     }

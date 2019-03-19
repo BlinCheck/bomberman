@@ -312,7 +312,7 @@ namespace Bomberman
                     DisplayScore();
                     break;
                 case "addTime":
-                    time.Minutes++;
+                    time.Seconds += 30;
                     time.DisplayTimer(null, null);
                     break;
                 case "coin":
@@ -320,7 +320,7 @@ namespace Bomberman
                     DisplayCoins();
                     break;
                 case "shop":
-                    (matrix[x, y] as Shop).DisplayShop(this);
+                    new Shop().DisplayShop(this);
                     break;
                 case "trap":
                     Lives--;
@@ -512,6 +512,7 @@ namespace Bomberman
             Score += time.Seconds * 5 + time.Minutes * 300;
             Score += Lives * 500;
             Score += BombAmount * 300;
+            Score += Coins * 350;
         }
 
         public void DisplayScore()

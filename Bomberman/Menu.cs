@@ -39,9 +39,13 @@ namespace Bomberman
             Console.WriteLine(" T - Additional time");
             Console.WriteLine(" % - doubles your current score");
             Console.WriteLine(" + - artifact that gives you 200 points");
+            Console.WriteLine(" © - coin");
+            Console.WriteLine(" There are some danger cells on field:");
+            Console.WriteLine(" U - pit (drop a bomb to get out of it)");
+            Console.WriteLine(" X - trap (you lose one life if step on it)");
+            Console.WriteLine(" There is shop $, where you can buy items using coins");
             Console.WriteLine(" Win condition: destroy all bricks(#) to win");
             Console.WriteLine(" If you run out of bombs, time or lives - you lose");
-            Console.WriteLine(" Your final score depends on time and amount of bombs and lives left");
             Console.WriteLine(" Good luck!");
             Console.WriteLine(" Press any key to return to menu");
             Console.ReadKey(true);
@@ -152,6 +156,8 @@ namespace Bomberman
                         }
                         break;
                     case ConsoleKey.Enter:
+                        Console.SetCursorPosition(0, 9);
+                        Console.Write("Loading...");
                         ChooseLevel(row);
                         NewMenu = false;
                         break;
