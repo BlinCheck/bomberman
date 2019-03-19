@@ -4,9 +4,9 @@ using System.Text;
 
 namespace Bomberman
 {
-    class AdditionalLife : Bonus
+    class AdditionalLife : SpecialElem
     {
-        public AdditionalLife() : base('L', "addLife")
+        public AdditionalLife() : base('L', "addLife", false)
         {
 
         }

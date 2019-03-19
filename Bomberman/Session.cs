@@ -14,11 +14,13 @@ namespace Bomberman
         public bool PlayerIsDead = false;
         public int BrickAmount { get; set; }
         public int BombAmount { get; set; }
+        public int Coins { get; set; }
         public int Lives { get; set; }
         public int Score { get; set; }
         public int PlayerX { get; set; }
         public int PlayerY { get; set; }
         public bool BombOn = false;
+        public bool OnConstant { get; set; }
         public Tuple<int, int> BombPosition;
         public string PlayerName { get; set; }
         public int[,] Ruines = new int[5, 2];
@@ -148,8 +150,8 @@ namespace Bomberman
                 {
                     key = Console.ReadKey(true);
 
-                    if (matrix[PlayerX, PlayerY].Name.Equals("bomb"))
-                        MoveFromBomb(matrix, key);
+                    if (matrix[PlayerX, PlayerY].Constant)
+                        MoveFromConstant(key);
                     else
                     {
                         switch (key.Key)
@@ -157,28 +159,24 @@ namespace Bomberman
                             case ConsoleKey.W:
                                 if (PlayerX - 1 >= 0 && matrix[PlayerX - 1, PlayerY].Walkable)
                                 {
-                                    PickUpBonus(PlayerX - 1, PlayerY);
                                     Step(-1, 0);
                                 }
                                 break;
                             case ConsoleKey.D:
                                 if (PlayerY + 1 <= matrix.Columns && matrix[PlayerX, PlayerY + 1].Walkable)
                                 {
-                                    PickUpBonus(PlayerX, PlayerY + 1);
                                     Step(0, 1);
                                 }
                                 break;
                             case ConsoleKey.A:
                                 if (PlayerY - 1 >= 0 && matrix[PlayerX, PlayerY - 1].Walkable)
                                 {
-                                    PickUpBonus(PlayerX, PlayerY - 1);
                                     Step(0, -1);
                                 }
                                 break;
                             case ConsoleKey.S:
                                 if (PlayerX + 1 <= matrix.Rows && matrix[PlayerX + 1, PlayerY].Walkable)
                                 {
-                                    PickUpBonus(PlayerX + 1, PlayerY);
                                     Step(1, 0);
                                 }
                                 break;
@@ -210,45 +208,40 @@ namespace Bomberman
             Thread.Sleep(1000);
         }
 
-        private void MoveFromBomb(Matrix matrix, ConsoleKeyInfo key)
+        private void MoveFromConstant(ConsoleKeyInfo key)
         {
             switch (key.Key)
             {
                 case ConsoleKey.W:
                     if (PlayerX - 1 >= 0 && matrix[PlayerX - 1, PlayerY].Walkable)
                     {
-                        PickUpBonus(PlayerX-1, PlayerY);
-                        StepFromBomb(-1, 0);
+                        StepFromConstant(-1, 0);
                     }
                     break;
                 case ConsoleKey.D:
                     if (PlayerY + 1 <= matrix.Columns && matrix[PlayerX, PlayerY + 1].Walkable)
                     {
-                        PickUpBonus(PlayerX, PlayerY+1);
-                        StepFromBomb(0, 1);
+                        StepFromConstant(0, 1);
                     }
                     break;
                 case ConsoleKey.A:
                     if (PlayerY - 1 >= 0 && matrix[PlayerX, PlayerY - 1].Walkable)
                     {
-                        PickUpBonus(PlayerX, PlayerY-1);
-                        StepFromBomb(0, -1);
+                        StepFromConstant(0, -1);
                     }
                     break;
                 case ConsoleKey.S:
                     if (PlayerX + 1 <= matrix.Rows && matrix[PlayerX + 1, PlayerY].Walkable)
                     {
-                        PickUpBonus(PlayerX+1, PlayerY);
-                        StepFromBomb(1, 0);
+                        StepFromConstant(1, 0);
                     }
                     break;
             }
         }
 
         private void Step(int difX, int difY)
-        { 
+        {
             matrix[PlayerX, PlayerY] = new Space();
-
             LockConsole();
             Console.SetCursorPosition(PlayerY, PlayerX);
             Console.Write(' ');
@@ -256,55 +249,91 @@ namespace Bomberman
 
             PlayerX += difX;
             PlayerY += difY;
-            matrix[PlayerX, PlayerY] = new Player();
 
-            LockConsole();
-            Console.SetCursorPosition(PlayerY, PlayerX);
-            Console.ForegroundColor = ConsoleColor.Yellow;
-            Console.Write('I');
-            UnlockConsole();
+            CheckEffect(PlayerX, PlayerY);
+            if (!matrix[PlayerX, PlayerY].Constant)
+            {
+                matrix[PlayerX, PlayerY] = new Player();
+                LockConsole();
+                Console.SetCursorPosition(PlayerY, PlayerX);
+                Console.ForegroundColor = ConsoleColor.Yellow;
+                Console.Write('I');
+                UnlockConsole();
+            }
+            else
+            {
+                ConsoleKeyInfo key = new ConsoleKeyInfo();
+                key = Console.ReadKey(true);
+                MoveFromConstant(key);
+            }
         }
 
-        private void StepFromBomb(int difX, int difY)
+        private void StepFromConstant(int difX, int difY)
         {
             PlayerX += difX;
             PlayerY += difY;
-            matrix[PlayerX, PlayerY] = new Player();
+            CheckEffect(PlayerX, PlayerY);
 
-            LockConsole();
-            Console.ForegroundColor = ConsoleColor.Yellow;
-            Console.SetCursorPosition(PlayerY, PlayerX);
-            Console.Write('I');
-            UnlockConsole();
+            if (!matrix[PlayerX, PlayerY].Constant)
+            {
+                LockConsole();
+                Console.ForegroundColor = ConsoleColor.Yellow;
+                Console.SetCursorPosition(PlayerY, PlayerX);
+                Console.Write('I');
+                UnlockConsole();
+            }
+            else
+            {
+                ConsoleKeyInfo key = new ConsoleKeyInfo();
+                key = Console.ReadKey(true);
+                MoveFromConstant(key);
+            }
             
         }
 
-        private void PickUpBonus(int x, int y)
+        private void CheckEffect(int x, int y)
         {
-            if(matrix[x, y].Name.Equals("addBomb"))
+            switch (matrix[x, y].Name)
             {
-                BombAmount++;
-                DisplayBombAmount();
-            }
-            else if (matrix[x, y].Name.Equals("addLife"))
-            {
-                Lives++;
-                DisplayLives();
-            }
-            else if (matrix[x, y].Name.Equals("addTime"))
-            {
-                time.Minutes++;
-                time.DisplayTimer(null, null);
-            }
-            else if (matrix[x, y].Name.Equals("artifact"))
-            {
-                Score += 200;
-                DisplayScore();
-            }
-            else if(matrix[x,y].Name.Equals("scoreMultiplier"))
-            {
-                Score *= 2;
-                DisplayScore();
+                case "addBomb":
+                    BombAmount++;
+                    DisplayBombAmount();
+                    break;
+                case "addLife":
+                    Lives++;
+                    DisplayLives();
+                    break;
+                case "artifact":
+                    Score += 200;
+                    DisplayScore();
+                    break;
+                case "scoreMultiplier":
+                    Score *= 2;
+                    DisplayScore();
+                    break;
+                case "addTime":
+                    time.Minutes++;
+                    time.DisplayTimer(null, null);
+                    break;
+                case "coin":
+                    Coins++;
+                    DisplayCoins();
+                    break;
+                case "shop":
+                    (matrix[x, y] as Shop).DisplayShop(this);
+                    break;
+                case "trap":
+                    Lives--;
+                    DisplayLives();
+                    if (Lives == 0)
+                    {
+                        End();
+                    }
+                    break;
+                case "bombDrop":
+                    BombAmount--;
+                    DisplayBombAmount();
+                    break;
             }
         }
 
@@ -447,7 +476,7 @@ namespace Bomberman
             }
         }
 
-        private void DisplayLives()
+        public void DisplayLives()
         {
             LockConsole();
             Console.ForegroundColor = ConsoleColor.White;
@@ -456,7 +485,7 @@ namespace Bomberman
             UnlockConsole();
         }
 
-        private void DisplayBombAmount()
+        public void DisplayBombAmount()
         {
             LockConsole();
             Console.ForegroundColor = ConsoleColor.White;
@@ -469,6 +498,15 @@ namespace Bomberman
             UnlockConsole();
         }
 
+        public void DisplayCoins()
+        {
+            LockConsole();
+            Console.ForegroundColor = ConsoleColor.White;
+            Console.SetCursorPosition(matrix.Columns + 3, 4);
+            Console.Write($"Coins: {Coins}");
+            UnlockConsole();
+        }
+
         private void FinalScore()
         {
             Score += time.Seconds * 5 + time.Minutes * 300;
@@ -476,7 +514,7 @@ namespace Bomberman
             Score += BombAmount * 300;
         }
 
-        private void DisplayScore()
+        public void DisplayScore()
         {
             LockConsole();
             Console.ForegroundColor = ConsoleColor.White;

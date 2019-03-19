@@ -4,9 +4,9 @@ using System.Text;
 
 namespace Bomberman
 {
-    class Bonus : Elem
+    class SpecialElem : Elem
     {
-        public Bonus(char sym, string name) : base(sym, name, true, true, ConsoleColor.Magenta)
+        public SpecialElem(char sym, string name, bool constant) : base(sym, name, true, true, ConsoleColor.Magenta, constant)
         {
 
         }

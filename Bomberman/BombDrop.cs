@@ -4,9 +4,9 @@ using System.Text;
 
 namespace Bomberman
 {
-    class Brick : Elem
+    class BombDrop : SpecialElem
     {
-        public Brick() : base('#', "brick", true, false, ConsoleColor.DarkYellow, true)
+        public BombDrop() : base('U', "bombDrop", true)
         {
 
         }

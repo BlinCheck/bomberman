@@ -4,9 +4,9 @@ using System.Text;
 
 namespace Bomberman
 {
-    class Artifact : Bonus
+    class Artifact : SpecialElem
     {
-        public Artifact() : base ('+', "artifact")
+        public Artifact() : base ('+', "artifact", false)
         {
 
         }

@@ -17,6 +17,11 @@ namespace Bomberman
         public int Score { get; set; }
         public Matrix matrix;
 
+        public Level()
+        {
+
+        }
+
         public static void Deserializer(string json)
         {
             Level level = new Level();
@@ -24,7 +29,6 @@ namespace Bomberman
             Session session = new Session(level);
             session.Start();
         }
-
 
         public void Save(Session session)
         {
@@ -42,7 +46,7 @@ namespace Bomberman
             System.IO.File.WriteAllText(@"C:\Users\user\source\repos\Bomberman\Bomberman\levels\Save.json", json);
         }
 
-       /* public Level(int number)
+        public Level(int number)
         {
             if(number == 2)
             {
@@ -92,6 +96,23 @@ namespace Bomberman
                 };
                 matrix.Columns = 9;
                 matrix.Rows = 9;
+            }
+
+            if(number == 4)
+            {
+                BrickAmount = 35;
+                BombAmount = 27;
+                Lives = 2;
+                PlayerX = 8;
+                PlayerY = 4;
+                Minutes = 3;
+                Seconds = 0;
+                matrix = new Matrix
+                {
+                    mas = MakeLevelFourMatrix(),
+                    Columns = 9,
+                    Rows = 9
+                };
             }
         }
 
@@ -159,6 +180,35 @@ namespace Bomberman
                 {space, brick, brick, concrete, space, brick, brick, space, brick, space}
             };
             return mas;
-        }*/
+        }
+
+        private Elem[,] MakeLevelFourMatrix()
+        {
+            Space space = new Space();
+            Player player = new Player();
+            Brick brick = new Brick();
+            Concrete concrete = new Concrete();
+            AdditionalBomb addBomb = new AdditionalBomb();
+            Coin coin = new Coin();
+            Shop shop = new Shop();
+            Trap trap = new Trap();
+            BombDrop bombDrop = new BombDrop();
+
+            Elem[,] mas = new Elem[,]
+            {
+                {coin, space, brick, concrete, space, brick, space, concrete, concrete, shop},
+                {concrete, concrete, space, concrete, coin, brick, brick, trap, brick, brick},
+                {space, addBomb, brick, concrete, brick, space, concrete, space, concrete, brick},
+                {concrete, concrete, brick, brick, space, bombDrop, brick, coin, concrete, space},
+                {space, brick, space, concrete, brick, concrete, brick, concrete, addBomb, brick},
+                {brick, coin, concrete, concrete, brick, concrete, space, brick, space, brick},
+                {space, brick, brick, concrete, space, brick, brick, concrete, brick, concrete},
+                {concrete, concrete, brick, brick, space, brick, space, concrete, coin, concrete},
+                {space, space, brick, concrete, player, concrete, brick, brick, brick, space},
+                {brick, coin, brick, concrete, concrete,concrete, brick, concrete, concrete, concrete}
+            };
+
+            return mas;
+        }
     }
 }

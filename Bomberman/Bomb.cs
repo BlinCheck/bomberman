@@ -6,7 +6,7 @@ namespace Bomberman
 {
     class Bomb : Elem
     {
-        public Bomb() : base('@', "bomb", true, false, ConsoleColor.Red)
+        public Bomb() : base('@', "bomb", true, false, ConsoleColor.Red, true)
         {
 
         }

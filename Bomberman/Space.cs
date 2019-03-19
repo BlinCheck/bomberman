@@ -6,7 +6,7 @@ namespace Bomberman
 {
     class Space : Elem
     {
-        public Space() : base(' ', "space", true, true, ConsoleColor.Black)
+        public Space() : base(' ', "space", true, true, ConsoleColor.Black, false)
         {
 
         }

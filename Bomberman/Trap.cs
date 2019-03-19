@@ -4,9 +4,9 @@ using System.Text;
 
 namespace Bomberman
 {
-    class Brick : Elem
+    class Trap : SpecialElem
     {
-        public Brick() : base('#', "brick", true, false, ConsoleColor.DarkYellow, true)
+        public Trap() : base('X', "trap", true)
         {
 
         }

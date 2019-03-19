@@ -4,9 +4,9 @@ using System.Text;
 
 namespace Bomberman
 {
-    class ScoreMultiplier : Bonus
+    class ScoreMultiplier : SpecialElem
     {
-        public ScoreMultiplier() : base('%', "scoreMultiplier")
+        public ScoreMultiplier() : base('%', "scoreMultiplier", false)
         {
 
         }

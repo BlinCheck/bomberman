@@ -6,7 +6,7 @@ namespace Bomberman
 {
     class Ruine : Elem
     {
-        public Ruine() : base('.', "ruine", false, false, ConsoleColor.DarkRed)
+        public Ruine() : base('.', "ruine", false, false, ConsoleColor.DarkRed, true)
         {
 
         }

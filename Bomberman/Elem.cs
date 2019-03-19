@@ -10,16 +10,18 @@ namespace Bomberman
         public string Name { get; set; }
         public bool Destroyable { get; set; }
         public bool Walkable { get; set; }
+        public bool Constant { get; set; }
         public ConsoleColor Color { get; set; }
 
 
-        public Elem(char sym, string name, bool destroyable, bool step, ConsoleColor color)
+        public Elem(char sym, string name, bool destroyable, bool step, ConsoleColor color, bool constant)
         {
             Symbol = sym;
             Name = name;
             Destroyable = destroyable;
             Walkable = step;
             Color = color;
+            Constant = constant;
         }
     }
 }
