@@ -4,11 +4,8 @@ using System.Text;
 
 namespace Bomberman
 {
-    class Elem
+    class Elem : Basic
     {
-        public char Symbol { get; set; }
-        public string Name { get; set; }
-        public bool Destroyable { get; set; }
         public bool Walkable { get; set; }
         public bool Constant { get; set; }
         public ConsoleColor Color { get; set; }

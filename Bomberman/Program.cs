@@ -18,6 +18,22 @@ namespace Bomberman
             Level level = JsonConvert.DeserializeObject<Level>(json);
             string json = JsonConvert.SerializeObject(level);
             System.IO.File.WriteAllText(@"C:\Users\user\source\repos\Bomberman\Bomberman\levels\level3.json", json);
+
+        Level level = new Level(1);
+            string json = JsonConvert.SerializeObject(level);
+            System.IO.File.WriteAllText(@"C:\Users\user\source\repos\Bomberman\Bomberman\levels\level1.json", json);
+
+            level = new Level(2);
+            json = JsonConvert.SerializeObject(level);
+            System.IO.File.WriteAllText(@"C:\Users\user\source\repos\Bomberman\Bomberman\levels\level2.json", json);
+
+            level = new Level(3);
+            json = JsonConvert.SerializeObject(level);
+            System.IO.File.WriteAllText(@"C:\Users\user\source\repos\Bomberman\Bomberman\levels\level3.json", json);
+
+            level = new Level(4);
+            json = JsonConvert.SerializeObject(level);
+            System.IO.File.WriteAllText(@"C:\Users\user\source\repos\Bomberman\Bomberman\levels\level4.json", json);
         */
 
 
