@@ -150,7 +150,7 @@ namespace Bomberman
                 {
                     key = Console.ReadKey(true);
 
-                    if (matrix[PlayerX, PlayerY].Constant)
+                    if (matrix[PlayerX, PlayerY].IsConstant)
                         MoveFromConstant(key);
                     else
                     {
@@ -250,8 +250,9 @@ namespace Bomberman
             PlayerX += difX;
             PlayerY += difY;
 
+            matrix[PlayerX, PlayerY].Effect(this);
             CheckEffect(PlayerX, PlayerY);
-            if (!matrix[PlayerX, PlayerY].Constant)
+            if (!matrix[PlayerX, PlayerY].IsConstant)
             {
                 matrix[PlayerX, PlayerY] = new Player();
                 LockConsole();
@@ -274,7 +275,7 @@ namespace Bomberman
             PlayerY += difY;
             CheckEffect(PlayerX, PlayerY);
 
-            if (!matrix[PlayerX, PlayerY].Constant)
+            if (!matrix[PlayerX, PlayerY].IsConstant)
             {
                 LockConsole();
                 Console.ForegroundColor = ConsoleColor.Yellow;
@@ -296,43 +297,31 @@ namespace Bomberman
             switch (matrix[x, y].Name)
             {
                 case "addBomb":
-                    BombAmount++;
-                    DisplayBombAmount();
+                    new AdditionalBomb().Effect(this);
                     break;
                 case "addLife":
-                    Lives++;
-                    DisplayLives();
+                    new AdditionalLife().Effect(this);
                     break;
                 case "artifact":
-                    Score += 200;
-                    DisplayScore();
+                    new Artifact().Effect(this);
                     break;
                 case "scoreMultiplier":
-                    Score *= 2;
-                    DisplayScore();
+                    new ScoreMultiplier().Effect(this);
                     break;
                 case "addTime":
-                    time.Seconds += 30;
-                    time.DisplayTimer(null, null);
+                    new AdditionalTime().Effect(this);
                     break;
                 case "coin":
-                    Coins++;
-                    DisplayCoins();
+                    new Coin().Effect(this);
                     break;
                 case "shop":
-                    new Shop().DisplayShop(this);
+                    new Shop().Effect(this);
                     break;
                 case "trap":
-                    Lives--;
-                    DisplayLives();
-                    if (Lives == 0)
-                    {
-                        End();
-                    }
+                    new Trap().Effect(this);
                     break;
                 case "bombDrop":
-                    BombAmount--;
-                    DisplayBombAmount();
+                    new BombDrop().Effect(this);
                     break;
             }
         }

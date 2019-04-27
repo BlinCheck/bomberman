@@ -13,6 +13,11 @@ namespace Bomberman
 
         }
 
+        public new void Effect(Session caller)
+        {
+            DisplayShop(caller);
+        }
+
         public void DisplayShop(Session session)
         {
             session.DisplayCoins();

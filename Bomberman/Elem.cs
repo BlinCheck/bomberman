@@ -7,7 +7,7 @@ namespace Bomberman
     class Elem : Basic
     {
         public bool Walkable { get; set; }
-        public bool Constant { get; set; }
+        public bool IsConstant { get; set; }
         public ConsoleColor Color { get; set; }
 
 
@@ -18,7 +18,12 @@ namespace Bomberman
             Destroyable = destroyable;
             Walkable = step;
             Color = color;
-            Constant = constant;
+            IsConstant = constant;
+        }
+
+        public void Effect(Session caller)
+        {
+
         }
     }
 }

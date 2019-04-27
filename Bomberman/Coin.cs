@@ -10,5 +10,12 @@ namespace Bomberman
         {
 
         }
+
+        public new void Effect(Session caller)
+        {
+            caller.Coins++;
+            caller.DisplayCoins();
+        }
+
     }
 }

@@ -87,7 +87,7 @@ namespace Bomberman
                 BombAmount = 33;
                 Lives = 2;
                 PlayerX = 5;
-                PlayerY = 3;
+                PlayerY = 2;
                 Minutes = 3;
                 Seconds = 40;
                 matrix = new Matrix
@@ -173,7 +173,7 @@ namespace Bomberman
                 {space, brick, brick, brick, space, concrete, brick, concrete, concrete, space},
                 {brick, concrete, addBomb, concrete, brick, concrete, space, brick, brick, brick},
                 {space, brick, concrete, concrete, brick, addBomb, brick, concrete, space, artifact},
-                {artifact, concrete, concrete, player, space, brick, concrete, concrete, concrete, brick},
+                {artifact, concrete, player, space, space, brick, concrete, concrete, concrete, brick},
                 {space, addBomb, concrete, concrete, space, brick, space, brick, concrete, brick},
                 {brick, concrete, brick, brick, brick, concrete, brick, brick, concrete, addLife},
                 {brick, concrete, space, concrete, brick, concrete, concrete, space, concrete, brick},

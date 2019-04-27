@@ -10,5 +10,11 @@ namespace Bomberman
         {
 
         }
+
+        public new void Effect(Session caller)
+        {
+            caller.Lives++;
+            caller.DisplayLives();
+        }
     }
 }

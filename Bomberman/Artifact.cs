@@ -10,5 +10,11 @@ namespace Bomberman
         {
 
         }
+
+        public new void Effect(Session caller)
+        {
+            caller.Score += 200;
+            caller.DisplayScore();
+        }
     }
 }
