@@ -71,7 +71,6 @@ namespace Bomberman
 
         public void DisplayMatrix()
         {
-
             for (int i = 0; i <= Rows; i++)
             {
                 for (int j = 0; j <= Columns; j++)

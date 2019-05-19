@@ -6,6 +6,13 @@ namespace Bomberman
 {
     class Menu
     {
+        const int MENU_SELECTOR_UPPER = 2;
+        const int MENU_SELECTOR_BOTTOM = 4;
+        const int LEVEL_SELECTOR_UPPER = 1;
+        const int LEVEL_SELECTOR_BOTTOM = 7;
+        const int MATRIX_SELECTOR_UPPER = 1;
+        const int MATRIX_SELECTOR_BOTTOM = 5;
+
         private bool NewMenu = true;
 
         public void DisplayMenu()
@@ -55,7 +62,7 @@ namespace Bomberman
         private void MenuSelector()
         {
             NewMenu = true;
-            int row = 2;
+            int row = MENU_SELECTOR_UPPER;  
             Console.SetCursorPosition(0, row);
             Console.Write(">");
             ConsoleKeyInfo key = new ConsoleKeyInfo();
@@ -67,7 +74,8 @@ namespace Bomberman
                 switch (key.Key)
                 {
                     case ConsoleKey.UpArrow:
-                        if (row > 2)
+                    
+                        if (row > MENU_SELECTOR_UPPER)
                         {
                             Console.SetCursorPosition(0, row--);
                             Console.Write(" ");
@@ -76,7 +84,7 @@ namespace Bomberman
                         }
                         break;
                     case ConsoleKey.DownArrow:
-                        if (row < 4)
+                        if (row < MENU_SELECTOR_BOTTOM)
                         {
                             Console.SetCursorPosition(0, row++);
                             Console.Write(" ");
@@ -126,7 +134,7 @@ namespace Bomberman
         private void LevelSelector()
         {
             NewMenu = true;
-            int row = 1;
+            int row = LEVEL_SELECTOR_UPPER;
             Console.SetCursorPosition(0, row);
             Console.Write(">");
             ConsoleKeyInfo key = new ConsoleKeyInfo();
@@ -138,7 +146,7 @@ namespace Bomberman
                 switch (key.Key)
                 {
                     case ConsoleKey.UpArrow:
-                        if (row > 1)
+                        if (row > LEVEL_SELECTOR_UPPER)
                         {
                             Console.SetCursorPosition(0, row--);
                             Console.Write(" ");
@@ -147,7 +155,7 @@ namespace Bomberman
                         }
                         break;
                     case ConsoleKey.DownArrow:
-                        if (row < 7)
+                        if (row < LEVEL_SELECTOR_BOTTOM)
                         {
                             Console.SetCursorPosition(0, row++);
                             Console.Write(" ");
@@ -164,6 +172,37 @@ namespace Bomberman
                 }
             }
         }
+        /*
+         * 
+        
+        private void ChooseLevel(int row)
+        {
+            string json = "";
+
+            switch (row)
+            {
+                case 1:
+                case 2:
+                case 3:
+                case 4:
+                    json = System.IO.File.ReadAllText($@"C:\Users\user\source\repos\Bomberman\Bomberman\levels\level{row}.json");
+                    Level.Deserializer(json);
+                    break;
+                case 5:
+                    json = "random";
+                    DisplayMatrixSizes();
+                    break;
+                case 6:
+                    json = System.IO.File.ReadAllText(@"C:\Users\user\source\repos\Bomberman\Bomberman\levels\Save.json");
+                    Level.Deserializer(json);
+                    break;
+                case 7:
+                    DisplayMenu();
+                    break;
+            }
+                
+        }
+*/
 
         private void ChooseLevel(int row)
         {
@@ -193,6 +232,7 @@ namespace Bomberman
                     DisplayMenu();
                     break;
             }
+
             if(json.Equals("random"))
             {
                 DisplayMatrixSizes();
@@ -217,7 +257,7 @@ namespace Bomberman
         private void MatrixSizeSelector()
         {
             NewMenu = true;
-            int row = 1;
+            int row = MENU_SELECTOR_UPPER;
             Console.SetCursorPosition(0, row);
             Console.Write(">");
             ConsoleKeyInfo key = new ConsoleKeyInfo();
@@ -229,7 +269,7 @@ namespace Bomberman
                 switch (key.Key)
                 {
                     case ConsoleKey.UpArrow:
-                        if (row > 1)
+                        if (row > MATRIX_SELECTOR_UPPER)
                         {
                             Console.SetCursorPosition(0, row--);
                             Console.Write(" ");
@@ -238,7 +278,7 @@ namespace Bomberman
                         }
                         break;
                     case ConsoleKey.DownArrow:
-                        if (row < 5)
+                        if (row < MATRIX_SELECTOR_BOTTOM)
                         {
                             Console.SetCursorPosition(0, row++);
                             Console.Write(" ");
@@ -257,24 +297,7 @@ namespace Bomberman
         private void ChooseMatrixSize(int row)
         {
             Session session;
-            switch (row)
-            {
-                case 1:
-                    session = new Session(6);
-                    break;
-                case 2:
-                    session = new Session(7);
-                    break;
-                case 3:
-                    session = new Session(8);
-                    break;
-                case 4:
-                    session = new Session(9);
-                    break;
-                case 5:
-                    session = new Session(10);
-                    break;
-            }
+            session = new Session(row + 5);
         }
     }
 }
