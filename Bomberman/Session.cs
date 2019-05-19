@@ -157,24 +157,28 @@ namespace Bomberman
                         switch (key.Key)
                         {
                             case ConsoleKey.W:
+                            case ConsoleKey.UpArrow:
                                 if (PlayerX - 1 >= 0 && matrix[PlayerX - 1, PlayerY].Walkable)
                                 {
                                     Step(-1, 0);
                                 }
                                 break;
                             case ConsoleKey.D:
+                            case ConsoleKey.RightArrow:
                                 if (PlayerY + 1 <= matrix.Columns && matrix[PlayerX, PlayerY + 1].Walkable)
                                 {
                                     Step(0, 1);
                                 }
                                 break;
                             case ConsoleKey.A:
+                            case ConsoleKey.LeftArrow:
                                 if (PlayerY - 1 >= 0 && matrix[PlayerX, PlayerY - 1].Walkable)
                                 {
                                     Step(0, -1);
                                 }
                                 break;
                             case ConsoleKey.S:
+                            case ConsoleKey.DownArrow:
                                 if (PlayerX + 1 <= matrix.Rows && matrix[PlayerX + 1, PlayerY].Walkable)
                                 {
                                     Step(1, 0);
@@ -213,24 +217,28 @@ namespace Bomberman
             switch (key.Key)
             {
                 case ConsoleKey.W:
+                case ConsoleKey.UpArrow:
                     if (PlayerX - 1 >= 0 && matrix[PlayerX - 1, PlayerY].Walkable)
                     {
                         StepFromConstant(-1, 0);
                     }
                     break;
                 case ConsoleKey.D:
+                case ConsoleKey.RightArrow:
                     if (PlayerY + 1 <= matrix.Columns && matrix[PlayerX, PlayerY + 1].Walkable)
                     {
                         StepFromConstant(0, 1);
                     }
                     break;
                 case ConsoleKey.A:
+                case ConsoleKey.LeftArrow:
                     if (PlayerY - 1 >= 0 && matrix[PlayerX, PlayerY - 1].Walkable)
                     {
                         StepFromConstant(0, -1);
                     }
                     break;
                 case ConsoleKey.S:
+                case ConsoleKey.DownArrow:
                     if (PlayerX + 1 <= matrix.Rows && matrix[PlayerX + 1, PlayerY].Walkable)
                     {
                         StepFromConstant(1, 0);

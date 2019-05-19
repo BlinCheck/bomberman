@@ -53,6 +53,7 @@ namespace Bomberman
                 switch(key.Key)
                 {
                     case ConsoleKey.W:
+                    case ConsoleKey.UpArrow:
                         if (row > 1)
                         {
                             session.LockConsole();
@@ -64,6 +65,7 @@ namespace Bomberman
                         }
                         break;
                     case ConsoleKey.S:
+                    case ConsoleKey.DownArrow:
                         if (row < 4)
                         {
                             session.LockConsole();
